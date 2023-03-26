@@ -35,7 +35,7 @@ const restrictAuthenticated = (
       next: express.NextFunction
     ) => {
       //1) Getting the token and check if exist
-      const token = req.headers?.authorization?.split(' ')[1];
+      const token = req.cookies.jwt;
 
       if (!token) {
         return next(

@@ -1,4 +1,6 @@
 import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
@@ -27,11 +29,21 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, please try again in an hour',
 });
 
+// Allow cors
+app.use(
+  cors({
+    origin: '*',
+  })
+);
+
 // Set Security HTTP Headers
 app.use(helmet());
 
 // Limit requests from same IP
 app.use('/api', limiter);
+
+// Cookie parser
+app.use(cookieParser());
 
 // Body parser
 app.use(
