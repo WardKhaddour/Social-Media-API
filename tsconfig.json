@@ -6,8 +6,8 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "strict": true,
+    "typeRoots": [
+      "./src/types"
+    ]
   },
-  "files": [
-    "./src/xss-clean.d.ts"
-  ]
 }

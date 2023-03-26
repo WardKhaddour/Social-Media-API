@@ -1,7 +1,7 @@
 import express from 'express';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import User, { UserDocInterface } from '../models/User';
+import User from '../models/User';
 import {
   CREATED,
   UNAUTHORIZED,
@@ -13,6 +13,7 @@ import {
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/AppError';
 import sendEmail from '../utils/email';
+import { UserDocInterface } from '../interfaces/UserDoc';
 
 interface ReqBody {
   email: string;

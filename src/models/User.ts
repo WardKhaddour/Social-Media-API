@@ -2,26 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { isValidEmail } from '../validators/isValidEmail';
-
-export interface UserDocInterface extends mongoose.Document {
-  email: string;
-  password: string;
-  role: string;
-  totalLoginAttempts: number;
-  loginAttemptsAt: Date;
-  name?: string;
-  photo?: String;
-  passwordChangedAt?: Date;
-  passwordResetToken?: String;
-  passwordResetExpires?: Date;
-  active: boolean;
-  isCorrectPassword(arg0: string, arg1: string): Promise<boolean>;
-  changedPasswordAfter(arg0: number): boolean;
-  createPasswordResetToken(): string;
-  cannotTryLogin(): boolean;
-  handleLoginAttemptFail(): Promise<void>;
-  resetTotalAttempts(): Promise<void>;
-}
+import { UserDocInterface } from '../interfaces/UserDoc';
 
 const UserSchema = new mongoose.Schema<UserDocInterface>(
   {

@@ -12,15 +12,6 @@ import { NOT_FOUND } from './constants';
 import AppError from './utils/AppError';
 import globalErrorHandler from './controllers/errorController';
 
-import { UserDocInterface } from './models/User';
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: UserDocInterface;
-    }
-  }
-}
 const app: express.Application = express();
 
 const limiter = rateLimit({
