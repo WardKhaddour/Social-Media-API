@@ -1,7 +1,68 @@
 import express from 'express';
+import rateLimit from 'express-rate-limit';
+import helmet from 'helmet';
+import mongoSanitize from 'express-mongo-sanitize';
+import xss from 'xss-clean';
+import hpp from 'hpp';
+import authRoutes from './routes/auth';
+import userRoutes from './routes/user';
+import { NOT_FOUND } from './constants';
+import AppError from './utils/AppError';
+import globalErrorHandler from './controllers/errorController';
 
+import { UserDocInterface } from './models/User';
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: UserDocInterface;
+    }
+  }
+}
 const app: express.Application = express();
 
-app.use(express.json());
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour',
+});
+
+// Set Security HTTP Headers
+app.use(helmet());
+
+// Limit requests from same IP
+app.use('/api', limiter);
+
+// Body parser
+app.use(
+  express.json({
+    limit: '10kb',
+  })
+);
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
+// Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: [],
+  })
+);
+
+// Serving static files
+app.use(express.static('public'));
+
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/user', userRoutes);
+
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server`, NOT_FOUND));
+});
+
+app.use(globalErrorHandler);
 
 export default app;
