@@ -1,4 +1,4 @@
-import { UserDocInterface } from '../../models/User';
+import { UserDocInterface } from '../../interfaces/UserDoc';
 declare global {
   namespace Express {
     interface Request {
