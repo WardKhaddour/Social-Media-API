@@ -221,3 +221,16 @@ export const updatePassword = catchAsync(
     createAndSendToken(user, OK, 'Password changed successfully', res);
   }
 );
+
+export const logout= (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+) => {
+  res.cookie('jwt', null);
+  res.status(OK).json({
+      success: true,
+    message:"Logged out successfully",
+    data: null,
+  })
+  }

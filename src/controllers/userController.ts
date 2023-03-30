@@ -4,6 +4,24 @@ import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/AppError';
 import { DELETED, OK, UNAUTHORIZED } from '../constants';
 
+export const checkAuthenticated = catchAsync(
+  async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+   
+    const user = req.user!;
+    res.status(OK).json({
+      success: true,
+      message: 'Welcome',
+      data: {
+        user: { name:user.name, email:user.email },
+      },
+    });
+  }
+);
+
 export const getUserData = async (
   req: express.Request,
   res: express.Response,

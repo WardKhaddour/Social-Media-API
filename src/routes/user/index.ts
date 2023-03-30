@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { body } from 'express-validator';
 
 import {
+  checkAuthenticated,
   deleteMe,
   getUserData,
   updateMe,
@@ -12,7 +13,7 @@ import validateRequest from '../../middleware/validateRequest';
 
 const router = Router();
 
-router.get('/', restrictAuthenticated(), getUserData);
+router.get('/', restrictAuthenticated(), checkAuthenticated);
 router.patch(
   '/',
   body('email')
