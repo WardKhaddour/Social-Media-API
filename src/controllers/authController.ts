@@ -32,6 +32,7 @@ const createAndSendToken = (
   user: UserDocInterface,
   statusCode: number,
   message: string,
+  req: express.Request,
   res: express.Response
 ) => {
   const token = signToken(user._id);
@@ -46,11 +47,19 @@ const createAndSendToken = (
   if (process.env.NODE_ENV === 'production') {
     cookieOptions.secure = true;
   }
+
+  const currentUrl =
+    process.env.NODE_ENV === 'production'
+      ? process.env.PROD_URL
+      : process.env.DEV_URL;
+
+  const userPhotoSrc = `${currentUrl}/images/${user.photo}`;
+
   res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
     success: true,
     message,
-    data: { user: { name: user.name, email: user.email } },
+    data: { user: { name: user.name, email: user.email, photo: userPhotoSrc } },
   });
 };
 
@@ -69,7 +78,7 @@ export const signup = catchAsync(
 
     const user = await User.create({ name, email, password });
 
-    createAndSendToken(user, CREATED, 'Account created successfully', res);
+    createAndSendToken(user, CREATED, 'Account created successfully', req, res);
   }
 );
 
@@ -116,7 +125,7 @@ export const login = catchAsync(
 
     await user.resetTotalAttempts();
 
-    createAndSendToken(user, OK, 'Logged In', res);
+    createAndSendToken(user, OK, 'Logged In', req, res);
   }
 );
 
@@ -194,7 +203,7 @@ export const resetPassword = catchAsync(
     await user.save();
     const token = signToken(user._id.toString());
 
-    createAndSendToken(user, OK, 'Changed password successfully', res);
+    createAndSendToken(user, OK, 'Changed password successfully', req, res);
   }
 );
 
@@ -218,19 +227,19 @@ export const updatePassword = catchAsync(
     user.password = password;
     await user.save();
 
-    createAndSendToken(user, OK, 'Password changed successfully', res);
+    createAndSendToken(user, OK, 'Password changed successfully', req, res);
   }
 );
 
-export const logout= (
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
+export const logout = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   res.cookie('jwt', null);
   res.status(OK).json({
-      success: true,
-    message:"Logged out successfully",
+    success: true,
+    message: 'Logged out successfully',
     data: null,
-  })
-  }
+  });
+};

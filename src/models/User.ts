@@ -35,7 +35,7 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
     photo: {
       type: String,
       required: false,
-      default: '../../public/default-user-photo.png',
+      default: 'default-user-photo.png',
     },
     role: {
       type: String,
