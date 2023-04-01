@@ -76,6 +76,12 @@ const restrictAuthenticated = (
         );
       }
 
+      if (!currentUser.emailIsConfirmed) {
+        return next(
+          new AppError('Please confirm your email first', UNAUTHORIZED)
+        );
+      }
+
       //GRANT ACCESS TO PROTECTED ROUTE
       req.user = currentUser;
       next();

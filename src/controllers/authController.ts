@@ -63,6 +63,46 @@ const createAndSendToken = (
   });
 };
 
+const sendEmailConfirmationLink = async (
+  user: UserDocInterface,
+  res: express.Response,
+  next: express.NextFunction,
+  title: string
+) => {
+  const confirmToken = user.createEmailConfirmToken();
+  await user.save({ validateBeforeSave: false });
+
+  const message = `${title}!!\n
+    Please confirm your email to get access to this App!\n
+    Your confirm email token is: ${confirmToken}\n
+    It's only valid for 10 minutes
+    `;
+
+  try {
+    await sendEmail({
+      email: user.email,
+      subject: title,
+      message,
+    });
+    res.status(200).json({
+      success: true,
+      message: 'Please enter the token sent to your email address',
+      data: {
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    user.emailConfirmToken = undefined;
+    user.emailConfirmExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new AppError('An Error occurred. Please try again later', SERVER_ERROR)
+    );
+  }
+};
+
 export const signup = catchAsync(
   async (
     req: express.Request,
@@ -77,11 +117,59 @@ export const signup = catchAsync(
     }
 
     const user = await User.create({ name, email, password });
-
-    createAndSendToken(user, CREATED, 'Account created successfully', req, res);
+    await sendEmailConfirmationLink(user, res, next, 'Welcome');
   }
 );
 
+export const resendConfirmToken = catchAsync(
+  async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return next(
+        new AppError('No user found with this email address', NOT_FOUND)
+      );
+    }
+    await sendEmailConfirmationLink(
+      user,
+      res,
+      next,
+      'Your confirm email token'
+    );
+  }
+);
+
+export const confirmEmail = catchAsync(
+  async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(req.params.token)
+      .digest('hex');
+
+    const user = await User.findOne({
+      emailConfirmToken: hashedToken,
+      emailConfirmExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return next(new AppError('Token is invalid or has expired', BAD_REQUEST));
+    }
+
+    user.emailIsConfirmed = true;
+    user.emailConfirmToken = undefined;
+    user.emailConfirmExpires = undefined;
+
+    await user.save();
+    createAndSendToken(user, OK, 'Welcome !!', req, res);
+  }
+);
 export const login = catchAsync(
   async (
     req: express.Request,
@@ -199,8 +287,6 @@ export const resetPassword = catchAsync(
     user.passwordResetExpires = undefined;
 
     await user.save();
-    const token = signToken(user._id.toString());
-
     createAndSendToken(user, OK, 'Changed password successfully', req, res);
   }
 );

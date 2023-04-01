@@ -44,8 +44,15 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
       enum: ['user', 'admin'],
     },
     passwordChangedAt: Date,
+    emailConfirmToken: String,
+    emailConfirmExpires: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
+    emailIsConfirmed: {
+      type: Boolean,
+      default: false,
+      select: false,
+    },
     active: {
       type: Boolean,
       default: true,
@@ -72,6 +79,17 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
 
         //False means not changed
         return false;
+      },
+      createEmailConfirmToken: function (): string {
+        const confirmToken = crypto.randomBytes(32).toString('hex');
+        this.emailConfirmToken = crypto
+          .createHash('sha256')
+          .update(confirmToken)
+          .digest('hex');
+
+        this.emailConfirmExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+        return confirmToken;
       },
 
       createPasswordResetToken: function (): string {
