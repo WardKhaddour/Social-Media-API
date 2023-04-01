@@ -53,8 +53,10 @@ const restrictAuthenticated = (
         typeof decodedToken === 'string' ? decodedToken : decodedToken?.userId;
       //3) Check if user still exists
       const currentUser = options.withPassword
-        ? await User.findById(userId).select('+password')
-        : await User.findById(userId);
+        ? await User.findById(userId)
+            .select('+emailIsConfirmed')
+            .select('+password')
+        : await User.findById(userId).select('+emailIsConfirmed');
 
       if (!currentUser) {
         return next(new AppError('The user is no longer exists', UNAUTHORIZED));

@@ -29,8 +29,10 @@ const sendEmailConfirmationLink = async (
       success: true,
       message: 'Please enter the token sent to your email address',
       data: {
-        name: user.name,
-        email: user.email,
+        user: {
+          name: user.name,
+          email: user.email,
+        },
       },
     });
   } catch (err) {
