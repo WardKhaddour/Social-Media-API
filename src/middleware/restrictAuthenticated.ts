@@ -79,9 +79,16 @@ const restrictAuthenticated = (
       }
 
       if (!currentUser.emailIsConfirmed) {
-        return next(
-          new AppError('Please confirm your email first', UNAUTHORIZED)
-        );
+        return res.status(UNAUTHORIZED).json({
+          success: false,
+          message: 'Please confirm your email first',
+          data: {
+            user: {
+              name: currentUser.name,
+              email: currentUser.email,
+            },
+          },
+        });
       }
 
       //GRANT ACCESS TO PROTECTED ROUTE

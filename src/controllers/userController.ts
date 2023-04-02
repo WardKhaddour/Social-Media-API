@@ -2,7 +2,8 @@ import express from 'express';
 import User from '../models/User';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/AppError';
-import { DELETED, OK, UNAUTHORIZED } from '../constants';
+import { DELETED, OK, SERVER_ERROR, UNAUTHORIZED } from '../constants';
+import sendEmail from '../utils/email';
 
 export const checkAuthenticated = catchAsync(
   async (
@@ -56,14 +57,53 @@ export const updateMe = catchAsync(
     const { email, name } = req.body;
     const user = req.user!;
 
-    user.email = email || user.email;
+    let resMessage = 'User updated successfully.';
+
+    if (user.email !== email) {
+      user.email = email;
+      user.emailIsConfirmed = false;
+      resMessage += ' Please confirm your new Email';
+      const confirmToken = user.createEmailConfirmToken();
+      const message = `Your Email confirm token!!\n
+        Please confirm your email to get access to this App!\n
+        Your confirm email token is: ${confirmToken}\n
+        It's only valid for 10 minutes
+    `;
+
+      try {
+        await sendEmail({
+          subject: 'Your Email confirm token',
+          email,
+          message,
+        });
+      } catch (error) {
+        user.emailConfirmToken = undefined;
+        user.emailConfirmExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+
+        return next(
+          new AppError(
+            'An Error occurred. Please try again later',
+            SERVER_ERROR
+          )
+        );
+      }
+    }
+
     user.name = name || user.name;
+
+    const currentUrl =
+      process.env.NODE_ENV === 'production'
+        ? process.env.PROD_URL
+        : process.env.DEV_URL;
+
+    const userPhotoSrc = `${currentUrl}/images/${user.photo}`;
     await user.save();
     res.status(OK).json({
       success: true,
-      message: 'User updated successfully',
+      message: resMessage,
       data: {
-        user: { name, email },
+        user: { name, email, photo: userPhotoSrc },
       },
     });
   }
