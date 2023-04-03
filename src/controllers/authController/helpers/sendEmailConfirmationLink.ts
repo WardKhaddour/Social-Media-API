@@ -6,7 +6,6 @@ import { SERVER_ERROR } from '../../../constants';
 
 const sendEmailConfirmationLink = async (
   user: UserDocInterface,
-  res: Response,
   next: NextFunction,
   title: string
 ) => {
@@ -24,16 +23,6 @@ const sendEmailConfirmationLink = async (
       email: user.email,
       subject: title,
       message,
-    });
-    res.status(200).json({
-      success: true,
-      message: 'Please enter the token sent to your email address',
-      data: {
-        user: {
-          name: user.name,
-          email: user.email,
-        },
-      },
     });
   } catch (err) {
     user.emailConfirmToken = undefined;

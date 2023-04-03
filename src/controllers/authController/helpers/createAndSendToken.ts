@@ -40,7 +40,14 @@ const createAndSendToken = (
   res.status(statusCode).json({
     success: true,
     message,
-    data: { user: { name: user.name, email: user.email, photo: userPhotoSrc } },
+    data: {
+      user: {
+        name: user.name,
+        email: user.email,
+        photo: userPhotoSrc,
+        emailIsConfirmed: user.emailIsConfirmed,
+      },
+    },
   });
 };
 

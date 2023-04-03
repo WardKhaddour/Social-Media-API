@@ -53,10 +53,8 @@ const restrictAuthenticated = (
         typeof decodedToken === 'string' ? decodedToken : decodedToken?.userId;
       //3) Check if user still exists
       const currentUser = options.withPassword
-        ? await User.findById(userId)
-            .select('+emailIsConfirmed')
-            .select('+password')
-        : await User.findById(userId).select('+emailIsConfirmed');
+        ? await User.findById(userId).select('+password')
+        : await User.findById(userId);
 
       if (!currentUser) {
         return next(new AppError('The user is no longer exists', UNAUTHORIZED));
@@ -78,18 +76,18 @@ const restrictAuthenticated = (
         );
       }
 
-      if (!currentUser.emailIsConfirmed) {
-        return res.status(UNAUTHORIZED).json({
-          success: false,
-          message: 'Please confirm your email first',
-          data: {
-            user: {
-              name: currentUser.name,
-              email: currentUser.email,
-            },
-          },
-        });
-      }
+      // if (!currentUser.emailIsConfirmed) {
+      //   return res.status(UNAUTHORIZED).json({
+      //     success: false,
+      //     message: 'Please confirm your email first',
+      //     data: {
+      //       user: {
+      //         name: currentUser.name,
+      //         email: currentUser.email,
+      //       },
+      //     },
+      //   });
+      // }
 
       //GRANT ACCESS TO PROTECTED ROUTE
       req.user = currentUser;

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import catchAsync from '../../../utils/catchAsync';
 import User from '../../../models/User';
-import { ReqBody } from '../helpers/ReqBody';
+import { ReqBody } from '../../../interfaces/AuthReqBody';
 import AppError from '../../../utils/AppError';
 import { OK, UNAUTHORIZED } from '../../../constants';
 import createAndSendToken from '../helpers/createAndSendToken';

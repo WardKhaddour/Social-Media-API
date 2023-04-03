@@ -23,7 +23,12 @@ export const checkAuthenticated = catchAsync(
       success: true,
       message: 'Welcome',
       data: {
-        user: { name: user.name, email: user.email, photo: userPhotoSrc },
+        user: {
+          name: user.name,
+          email: user.email,
+          photo: userPhotoSrc,
+          emailIsConfirmed: user.emailIsConfirmed,
+        },
       },
     });
   }
@@ -103,7 +108,12 @@ export const updateMe = catchAsync(
       success: true,
       message: resMessage,
       data: {
-        user: { name, email, photo: userPhotoSrc },
+        user: {
+          name,
+          email,
+          photo: userPhotoSrc,
+          emailIsConfirmed: user.emailIsConfirmed,
+        },
       },
     });
   }

@@ -51,7 +51,6 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
     emailIsConfirmed: {
       type: Boolean,
       default: false,
-      select: false,
     },
     active: {
       type: Boolean,

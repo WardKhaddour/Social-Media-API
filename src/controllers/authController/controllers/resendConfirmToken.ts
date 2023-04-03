@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { NOT_FOUND } from '../../../constants';
+import { NOT_FOUND, OK } from '../../../constants';
 import User from '../../../models/User';
 import AppError from '../../../utils/AppError';
 import catchAsync from '../../../utils/catchAsync';
@@ -13,12 +13,12 @@ const resendConfirmToken = catchAsync(
         new AppError('No user found with this email address', NOT_FOUND)
       );
     }
-    await sendEmailConfirmationLink(
-      user,
-      res,
-      next,
-      'Your confirm email token'
-    );
+    await sendEmailConfirmationLink(user, next, 'Your confirm email token');
+
+    res.status(OK).json({
+      success: true,
+      message: 'Token sent successfully',
+    });
   }
 );
 
