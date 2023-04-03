@@ -34,7 +34,7 @@ const createAndSendToken = (
       ? process.env.PROD_URL
       : process.env.DEV_URL;
 
-  const userPhotoSrc = `${currentUrl}/images/${user.photo}`;
+  const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
 
   res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({

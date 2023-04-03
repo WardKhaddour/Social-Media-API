@@ -18,7 +18,7 @@ export const checkAuthenticated = catchAsync(
         ? process.env.PROD_URL
         : process.env.DEV_URL;
 
-    const userPhotoSrc = `${currentUrl}/images/${user.photo}`;
+    const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
     res.status(OK).json({
       success: true,
       message: 'Welcome',
@@ -61,10 +61,14 @@ export const updateMe = catchAsync(
   ) => {
     const { email, name } = req.body;
     const user = req.user!;
+    let photo = null;
+    if (req.file) {
+      photo = req.file.filename;
+    }
 
     let resMessage = 'User updated successfully.';
 
-    if (user.email !== email) {
+    if (email && user.email !== email) {
       user.email = email;
       user.emailIsConfirmed = false;
       resMessage += ' Please confirm your new Email';
@@ -96,21 +100,21 @@ export const updateMe = catchAsync(
     }
 
     user.name = name || user.name;
-
+    user.photo = photo || user.photo;
     const currentUrl =
       process.env.NODE_ENV === 'production'
         ? process.env.PROD_URL
         : process.env.DEV_URL;
 
-    const userPhotoSrc = `${currentUrl}/images/${user.photo}`;
-    await user.save();
+    const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
+    await user.save({ validateBeforeSave: false });
     res.status(OK).json({
       success: true,
       message: resMessage,
       data: {
         user: {
-          name,
-          email,
+          name: user.name,
+          email: user.email,
           photo: userPhotoSrc,
           emailIsConfirmed: user.emailIsConfirmed,
         },

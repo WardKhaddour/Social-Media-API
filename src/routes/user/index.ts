@@ -10,19 +10,23 @@ import {
 
 import restrictAuthenticated from '../../middleware/restrictAuthenticated';
 import validateRequest from '../../middleware/validateRequest';
+import uploadUserPhoto from '../../middleware/uploadUserPhoto';
+import resizeUserPhoto from '../../middleware/resizeUserPhoto';
 
 const router = Router();
 
 router.get('/', restrictAuthenticated(), checkAuthenticated);
 router.patch(
   '/',
+  uploadUserPhoto,
   body('email')
     .optional({ checkFalsy: false })
     .isEmail()
     .withMessage('Please provide a valid E-Mail'),
   body('name').optional({ checkFalsy: false }),
-  validateRequest,
   restrictAuthenticated(),
+  validateRequest,
+  resizeUserPhoto,
   updateMe
 );
 

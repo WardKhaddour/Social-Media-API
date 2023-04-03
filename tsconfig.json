@@ -6,6 +6,7 @@
     "outDir": "./build",
     "esModuleInterop": true,
     "strict": true,
+    "allowSyntheticDefaultImports": true,
     "typeRoots": [
       "./src/types"
     ]
