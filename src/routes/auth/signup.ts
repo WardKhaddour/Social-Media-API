@@ -3,11 +3,13 @@ import { body } from 'express-validator';
 import { signup } from '../../controllers/authController';
 import isMatchedPasswords from '../../validators/isMatchedPasswords';
 import validateRequest from '../../middleware/validateRequest';
+import restrictHuman from '../../middleware/restrictHuman';
 
 const router = Router();
 
 router.post(
   '/signup',
+  restrictHuman,
   body('email').isEmail().withMessage('Please provide a valid E-Mail'),
   body('password')
     .trim()

@@ -19,6 +19,7 @@ declare global {
       SMTP_PORT: number;
       SMTP_USERNAME: string;
       SMTP_PASSWORD: string;
+      RECAPTCHA_SECRET_KEY: string;
     }
   }
 }
