@@ -4,7 +4,7 @@ import catchAsync from '../../../utils/catchAsync';
 import User from '../../../models/User';
 import AppError from '../../../utils/AppError';
 import { NOT_FOUND, SERVER_ERROR } from '../../../constants';
-import sendEmail from '../../../utils/email';
+import Email from '../../../utils/Email';
 
 const forgotPassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -18,17 +18,10 @@ const forgotPassword = catchAsync(
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const message = `Forgot your password?\n
-    Your Reset Token is ${resetToken} \n
-    It's only valid for 10 minutes!!.\n
-    If you didn't forgot your password, please ignore this email`;
-
     try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Your password reset token (valid only for 10 minutes)',
-        message,
-      });
+      const email = new Email(user.email, resetToken);
+      await email.sendPasswordReset();
+
       res.status(200).json({
         success: true,
         message: 'Token sent to your email',

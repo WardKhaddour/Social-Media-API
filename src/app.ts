@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
@@ -13,6 +14,9 @@ import AppError from './utils/AppError';
 import globalErrorHandler from './controllers/errorController';
 
 const app: express.Application = express();
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 const limiter = rateLimit({
   max: 100,

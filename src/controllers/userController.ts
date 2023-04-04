@@ -3,7 +3,7 @@ import User from '../models/User';
 import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/AppError';
 import { DELETED, OK, SERVER_ERROR, UNAUTHORIZED } from '../constants';
-import sendEmail from '../utils/email';
+import Email from '../utils/Email';
 
 export const checkAuthenticated = catchAsync(
   async (
@@ -73,18 +73,10 @@ export const updateMe = catchAsync(
       user.emailIsConfirmed = false;
       resMessage += ' Please confirm your new Email';
       const confirmToken = user.createEmailConfirmToken();
-      const message = `Your Email confirm token!!\n
-        Please confirm your email to get access to this App!\n
-        Your confirm email token is: ${confirmToken}\n
-        It's only valid for 10 minutes
-    `;
 
       try {
-        await sendEmail({
-          subject: 'Your Email confirm token',
-          email,
-          message,
-        });
+        const email = new Email(user.email, confirmToken);
+        await email.sendEmailConfirm();
       } catch (error) {
         user.emailConfirmToken = undefined;
         user.emailConfirmExpires = undefined;

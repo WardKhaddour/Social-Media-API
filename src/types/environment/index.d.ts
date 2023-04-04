@@ -13,6 +13,12 @@ declare global {
       EMAIL_PASSWORD: string;
       EMAIL_HOST: string;
       EMAIL_PORT: number;
+      EMAIL_FROM: string;
+      EMAIL_PROD_API_KEY: string;
+      SMTP_HOST: string;
+      SMTP_PORT: number;
+      SMTP_USERNAME: string;
+      SMTP_PASSWORD: string;
     }
   }
 }

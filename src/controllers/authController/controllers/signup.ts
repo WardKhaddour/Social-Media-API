@@ -18,7 +18,7 @@ const signup = catchAsync(
     }
 
     const user = await User.create({ name, email, password });
-    await sendEmailConfirmationLink(user, next, 'Welcome');
+    await sendEmailConfirmationLink(user, next);
 
     createAndSendToken(user, OK, 'Account creates successfully', req, res);
   }

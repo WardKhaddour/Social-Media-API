@@ -1,29 +1,19 @@
-import { Response, NextFunction } from 'express';
+import { NextFunction } from 'express';
 import { UserDocInterface } from '../../../interfaces/UserDoc';
-import sendEmail from '../../../utils/email';
+import Email from '../../../utils/Email';
 import AppError from '../../../utils/AppError';
 import { SERVER_ERROR } from '../../../constants';
 
 const sendEmailConfirmationLink = async (
   user: UserDocInterface,
-  next: NextFunction,
-  title: string
+  next: NextFunction
 ) => {
   const confirmToken = user.createEmailConfirmToken();
   await user.save({ validateBeforeSave: false });
 
-  const message = `${title}!!\n
-    Please confirm your email to get access to this App!\n
-    Your confirm email token is: ${confirmToken}\n
-    It's only valid for 10 minutes
-    `;
-
   try {
-    await sendEmail({
-      email: user.email,
-      subject: title,
-      message,
-    });
+    const email = new Email(user.email, confirmToken);
+    await email.sendEmailConfirm();
   } catch (err) {
     user.emailConfirmToken = undefined;
     user.emailConfirmExpires = undefined;

@@ -13,7 +13,7 @@ const resendConfirmToken = catchAsync(
         new AppError('No user found with this email address', NOT_FOUND)
       );
     }
-    await sendEmailConfirmationLink(user, next, 'Your confirm email token');
+    await sendEmailConfirmationLink(user, next);
 
     res.status(OK).json({
       success: true,
