@@ -8,6 +8,10 @@ const restrictHuman = async (
   res: Response,
   next: NextFunction
 ) => {
+  if (process.env.NODE_ENV === 'development') {
+    return next();
+  }
+
   const { recaptchaToken } = req.body;
   const isHuman = await validateHuman(recaptchaToken!);
   if (!isHuman) {

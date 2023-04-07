@@ -1,7 +1,6 @@
 const validateHuman = async (token: string): Promise<boolean> => {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`;
-  console.log(url);
 
   try {
     let data;
