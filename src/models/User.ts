@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { isValidEmail } from '../validators/isValidEmail';
-import { UserDocInterface } from '../interfaces/UserDoc';
+import { UserDocInterface } from '../interfaces/documents/UserDoc';
 
 const UserSchema = new mongoose.Schema<UserDocInterface>(
   {
@@ -42,6 +42,14 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
       required: true,
       default: 'user',
       enum: ['user', 'admin'],
+    },
+    followers: {
+      type: Number,
+      default: 0,
+    },
+    following: {
+      type: Number,
+      default: 0,
     },
     passwordChangedAt: Date,
     emailConfirmToken: String,

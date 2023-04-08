@@ -4,6 +4,8 @@ export interface UserDocInterface extends Document {
   email: string;
   password: string;
   role: string;
+  followers: number;
+  following: number;
   totalLoginAttempts: number;
   loginAttemptsAt: Date;
   name?: string;

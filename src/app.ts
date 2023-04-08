@@ -9,6 +9,7 @@ import xss from 'xss-clean';
 import hpp from 'hpp';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
+import postsRoutes from './routes/posts';
 import { NOT_FOUND } from './constants';
 import AppError from './utils/AppError';
 import globalErrorHandler from './controllers/errorController';
@@ -66,6 +67,7 @@ app.use(express.static('public'));
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/posts', postsRoutes);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, NOT_FOUND));
