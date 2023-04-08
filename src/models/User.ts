@@ -127,7 +127,10 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
 );
 
 UserSchema.pre(/^find/, function (next) {
-  this.find({ active: true });
+  if (!this.getOptions().disableMiddleware) {
+    this.find({ active: true });
+  }
+
   next();
 });
 

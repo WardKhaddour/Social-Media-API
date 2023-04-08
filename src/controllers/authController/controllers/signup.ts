@@ -11,13 +11,25 @@ import createAndSendToken from '../helpers/createAndSendToken';
 const signup = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { name, email, password }: ReqBody = req.body;
-    const foundUser = await User.findOne({ email });
+    const query = User.findOne({ email }).select('+active');
+    query.setOptions({
+      disableMiddleware: true,
+    });
+    let user = await query.exec();
 
-    if (foundUser) {
+    if (user && user.active) {
       return next(new AppError('E-Mail already in use', BAD_REQUEST));
     }
 
-    const user = await User.create({ name, email, password });
+    if (!user) {
+      user = await User.create({ name, email, password });
+    } else {
+      user.name = name;
+      user.active = true;
+
+      await user.save();
+    }
+
     await sendEmailConfirmationLink(user, next);
 
     createAndSendToken(user, OK, 'Account creates successfully', req, res);

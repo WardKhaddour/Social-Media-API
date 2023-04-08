@@ -123,6 +123,7 @@ export const deleteMe = catchAsync(
   ) => {
     const { password } = req.body;
     const user = req.user!;
+    console.log(password);
 
     if (!(await user.isCorrectPassword(password, user.password))) {
       return next(
@@ -130,6 +131,9 @@ export const deleteMe = catchAsync(
       );
     }
     user.active = false;
+    user.emailIsConfirmed = false;
+    user.name = 'Deleted Account';
+    user.photo = undefined;
     await user.save();
     res.status(DELETED).json({
       success: false,
