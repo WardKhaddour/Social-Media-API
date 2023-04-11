@@ -1,0 +1,10 @@
+{
+  "msg": {
+    "incorrectPassword": "Incorrect password. Please try again",
+    "serverErrorOccurred": "An Error occurred. Please try again later",
+    "confirmNewEmail": "Please confirm your new Email",
+    "userUpdated": "User Updated Successfully",
+    "gotUserSuccess": "Got user successfully",
+    "welcome": "Welcome"
+  }
+}

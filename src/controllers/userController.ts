@@ -21,7 +21,7 @@ export const checkAuthenticated = catchAsync(
     const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
     res.status(OK).json({
       success: true,
-      message: 'Welcome',
+      message: req.i18n.t('msg.welcome'),
       data: {
         user: {
           name: user.name,
@@ -42,7 +42,7 @@ export const getUserData = async (
   const users = await User.find();
   res.status(200).json({
     success: true,
-    message: 'Got user successfully',
+    message: req.i18n.t('msg.gotUserSuccess'),
     data: {
       users,
       user: {
@@ -66,12 +66,12 @@ export const updateMe = catchAsync(
       photo = req.file.filename;
     }
 
-    let resMessage = 'User updated successfully.';
+    let resMessage = req.i18n.t('msg.userUpdated');
 
     if (email && user.email !== email) {
       user.email = email;
       user.emailIsConfirmed = false;
-      resMessage += ' Please confirm your new Email';
+      resMessage += req.i18n.t('msg.confirmNewEmail');
       const confirmToken = user.createEmailConfirmToken();
 
       try {
@@ -83,10 +83,7 @@ export const updateMe = catchAsync(
         await user.save({ validateBeforeSave: false });
 
         return next(
-          new AppError(
-            'An Error occurred. Please try again later',
-            SERVER_ERROR
-          )
+          new AppError(req.i18n.t('msg.serverErrorOccurred'), SERVER_ERROR)
         );
       }
     }
@@ -127,7 +124,7 @@ export const deleteMe = catchAsync(
 
     if (!(await user.isCorrectPassword(password, user.password))) {
       return next(
-        new AppError('Incorrect password. Please try again', UNAUTHORIZED)
+        new AppError(req.i18n.t('msg.incorrectPassword'), UNAUTHORIZED)
       );
     }
     user.active = false;

@@ -7,6 +7,9 @@ import helmet from 'helmet';
 import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
+import './localization';
+import i18next from 'i18next';
+import i18nMiddleware from 'i18next-http-middleware';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import postsRoutes from './routes/posts';
@@ -64,6 +67,15 @@ app.use(
 
 // Serving static files
 app.use(express.static('public'));
+
+// Language Headers
+app.use(i18nMiddleware.handle(i18next));
+app.use('/api/v1', (req, res, next) => {
+  const lang = req.headers.lang || 'en';
+  req.i18n.changeLanguage(lang);
+  req.i18n.getFixedT<'translation'>(lang);
+  next();
+});
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
