@@ -9,12 +9,7 @@ const restrictTo = (...roles: [string]) => {
     next: express.NextFunction
   ) => {
     if (!req.user || !roles.includes(req.user.role!)) {
-      return next(
-        new AppError(
-          'You do not have permission to perform this action',
-          FORBIDDEN
-        )
-      );
+      return next(new AppError(req.i18n.t('msg.noPermissions'), FORBIDDEN));
     }
     next();
   };

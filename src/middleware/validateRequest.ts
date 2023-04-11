@@ -12,7 +12,7 @@ const validateRequest = (req: Request, res: Response, next: NextFunction) => {
   if (!errors.isEmpty())
     return res.status(VALIDATION_ERROR).json({
       success: false,
-      message: 'Invalid data',
+      message: req.i18n.t('msg.invalidData'),
       data: {
         errors: errors.array(),
       },

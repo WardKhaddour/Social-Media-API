@@ -19,7 +19,9 @@ const confirmEmail = catchAsync(
     });
 
     if (!user) {
-      return next(new AppError('Token is invalid or has expired', BAD_REQUEST));
+      return next(
+        new AppError(req.i18n.t('msg.invalidExpiredToken'), BAD_REQUEST)
+      );
     }
 
     user.emailIsConfirmed = true;
@@ -27,7 +29,7 @@ const confirmEmail = catchAsync(
     user.emailConfirmExpires = undefined;
 
     await user.save();
-    createAndSendToken(user, OK, 'Welcome !!', req, res);
+    createAndSendToken(user, OK, req.i18n.t('msg.welcome'), req, res);
   }
 );
 

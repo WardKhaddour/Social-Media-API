@@ -11,9 +11,7 @@ const forgotPassword = catchAsync(
     const user = await User.findOne({ email: req.body.email });
 
     if (!user) {
-      return next(
-        new AppError('There is no user with this email address', NOT_FOUND)
-      );
+      return next(new AppError(req.i18n.t('msg.noUserEmail'), NOT_FOUND));
     }
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
@@ -24,7 +22,7 @@ const forgotPassword = catchAsync(
 
       res.status(200).json({
         success: true,
-        message: 'Token sent to your email',
+        message: req.i18n.t('msg.tokenSent'),
       });
     } catch (err) {
       console.log(err);
@@ -34,7 +32,7 @@ const forgotPassword = catchAsync(
       await user.save({ validateBeforeSave: false });
 
       return next(
-        new AppError('An Error occurred. Please try again later', SERVER_ERROR)
+        new AppError(req.i18n.t('msg.serverErrorOccurred'), SERVER_ERROR)
       );
     }
   }

@@ -2,35 +2,38 @@ import express from 'express';
 import { SERVER_ERROR, BAD_REQUEST, UNAUTHORIZED } from '../constants';
 import AppError from '../utils/AppError';
 
-const handleCastErrorDB = (err: AppError) => {
+const handleCastErrorDB = (err: AppError, req: express.Request) => {
   console.log(err.name);
 
-  const message = `Invalid ${err.path}: ${err.value}`;
+  const message = `${req.i18n.t('msg.invalid')} ${err.path}: ${err.value}`;
   return new AppError(message, BAD_REQUEST);
 };
 
-const handleDuplicateFieldsDB = (err: AppError) => {
-  let message: string = 'Duplicate field value. Please use another value';
+const handleDuplicateFieldsDB = (err: AppError, req: express.Request) => {
+  let message: string =
+    req.i18n.t('msg.duplicateField') + req.i18n.t('msg.useOtherValue');
   const regEx = /(["'])(\\?.)*?\1/;
   if (err.errmsg && err.errmsg.match(regEx)) {
     const value: string = err.errmsg.match(regEx)![0] || '';
-    message = `Duplicate field value ${value}. Please use another value`;
+    message = `${req.i18n.t('msg.duplicateField')} ${value} ${req.i18n.t(
+      'msg.useOtherValue'
+    )} .`;
   }
 
   return new AppError(message, BAD_REQUEST);
 };
 
-const handleValidationErrorDB = (err: AppError) => {
-  const message = `Invalid Input Data`;
+const handleValidationErrorDB = (err: AppError, req: express.Request) => {
+  const message = req.i18n.t('msg.invalidData');
   return new AppError(message, BAD_REQUEST);
 };
 
-const handleJWTError = () => {
-  return new AppError('Invalid Token. Please login again', UNAUTHORIZED);
+const handleJWTError = (req: express.Request) => {
+  return new AppError(req.i18n.t('msg.invalidToken'), UNAUTHORIZED);
 };
 
-const handleJWTExpiredError = () =>
-  new AppError('Your Token has expired!. Please login again', UNAUTHORIZED);
+const handleJWTExpiredError = (req: express.Request) =>
+  new AppError(req.i18n.t('msg.serverError'), UNAUTHORIZED);
 
 const sendErrorDev = (err: AppError, res: express.Response) => {
   res.status(err.statusCode).json({
@@ -42,7 +45,11 @@ const sendErrorDev = (err: AppError, res: express.Response) => {
   });
 };
 
-const sendErrorProd = (err: AppError, res: express.Response) => {
+const sendErrorProd = (
+  err: AppError,
+  req: express.Request,
+  res: express.Response
+) => {
   if (err.isOperational)
     return res.status(err.statusCode).json({
       success: false,
@@ -53,7 +60,7 @@ const sendErrorProd = (err: AppError, res: express.Response) => {
 
   res.status(SERVER_ERROR).json({
     success: false,
-    message: 'Something went wrong',
+    message: req.i18n.t('msg.serverError'),
     data: null,
   });
 };
@@ -74,23 +81,23 @@ const globalErrorHandler: express.ErrorRequestHandler = (
   console.log(err);
 
   if (err.name === 'CastError') {
-    err = handleCastErrorDB(err);
+    err = handleCastErrorDB(err, req);
   }
 
   if (err.code === 11000) {
-    err = handleDuplicateFieldsDB(err);
+    err = handleDuplicateFieldsDB(err, req);
   }
 
   if (err.name === 'ValidationError') {
-    err = handleValidationErrorDB(err);
+    err = handleValidationErrorDB(err, req);
   }
   if (err.name === 'JsonWebTokenError') {
-    err = handleJWTError();
+    err = handleJWTError(req);
   }
   if (err.name === 'TokenExpiredError') {
-    err = handleJWTExpiredError();
+    err = handleJWTExpiredError(req);
   }
-  sendErrorProd(err, res);
+  sendErrorProd(err, req, res);
 };
 
 export default globalErrorHandler;

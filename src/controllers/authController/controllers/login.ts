@@ -13,7 +13,9 @@ const login = catchAsync(
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      return next(new AppError('Invalid credentials', UNAUTHORIZED));
+      return next(
+        new AppError(req.i18n.t('msg.invalidCredentials'), UNAUTHORIZED)
+      );
     }
 
     if (user.cannotTryLogin()) {
@@ -23,7 +25,7 @@ const login = catchAsync(
       ).toFixed(2);
       return next(
         new AppError(
-          `Please wait ${remainingTime} minutes then retry`,
+          req.i18n.t('msg.timeToLogin', { remainingTime }),
           UNAUTHORIZED
         )
       );
@@ -38,7 +40,7 @@ const login = catchAsync(
       await user.handleLoginAttemptFail();
       return next(
         new AppError(
-          `Invalid credentials, You have only ${user.totalLoginAttempts} remaining login attempts`,
+          req.i18n.t('msg.failedLogin', { remaining: user.totalLoginAttempts }),
           UNAUTHORIZED
         )
       );
@@ -46,7 +48,7 @@ const login = catchAsync(
 
     await user.resetTotalAttempts();
 
-    createAndSendToken(user, OK, 'Logged In', req, res);
+    createAndSendToken(user, OK, req.i18n.t('msg.loggedIn'), req, res);
   }
 );
 

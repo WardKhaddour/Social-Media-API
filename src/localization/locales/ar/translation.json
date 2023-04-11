@@ -5,6 +5,7 @@
     "confirmNewEmail": "Please confirm your new Email",
     "userUpdated": "User Updated Successfully",
     "gotUserSuccess": "Got user successfully",
-    "welcome": "مرحبا"
+    "welcome": "مرحبا",
+    "serverError": "حدث خطأ ما"
   }
 }

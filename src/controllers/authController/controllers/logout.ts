@@ -5,7 +5,7 @@ const logout = (req: Request, res: Response, next: NextFunction) => {
   res.cookie('jwt', null);
   res.status(OK).json({
     success: true,
-    message: 'Logged out successfully',
+    message: req.i18n.t('msg.loggedOutSuccess'),
     data: null,
   });
 };

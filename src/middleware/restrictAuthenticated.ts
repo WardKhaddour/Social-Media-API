@@ -38,12 +38,7 @@ const restrictAuthenticated = (
       const token = req.cookies.jwt;
 
       if (!token) {
-        return next(
-          new AppError(
-            'You are not logged in!! Please login first',
-            UNAUTHORIZED
-          )
-        );
+        return next(new AppError(req.i18n.t('msg.notLoggedIn'), UNAUTHORIZED));
       }
 
       //2) Verification token
@@ -57,7 +52,7 @@ const restrictAuthenticated = (
         : await User.findById(userId);
 
       if (!currentUser) {
-        return next(new AppError('The user is no longer exists', UNAUTHORIZED));
+        return next(new AppError(req.i18n.t('msg.deletedUser'), UNAUTHORIZED));
       }
 
       //4) Check if user changed password after the token was issued
@@ -69,10 +64,7 @@ const restrictAuthenticated = (
 
       if (currentUser.changedPasswordAfter(tokenIssuedAt)) {
         return next(
-          new AppError(
-            'User recently changed password! Please login again.',
-            UNAUTHORIZED
-          )
+          new AppError(req.i18n.t('msg.passwordChangedRecently'), UNAUTHORIZED)
         );
       }
 

@@ -14,7 +14,7 @@ const restrictConfirmedEmail = catchAsync(
     if (!user.emailIsConfirmed) {
       return res.status(UNAUTHORIZED).json({
         success: false,
-        message: 'Please confirm your email first',
+        message: req.i18n.t('msg.unconfirmedEmail'),
         data: {
           user: {
             name: user.name,

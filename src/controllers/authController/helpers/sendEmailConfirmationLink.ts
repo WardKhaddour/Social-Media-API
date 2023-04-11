@@ -1,4 +1,4 @@
-import { NextFunction } from 'express';
+import { Request, NextFunction } from 'express';
 import { UserDocInterface } from '../../../interfaces/documents/UserDoc';
 import Email from '../../../utils/Email';
 import AppError from '../../../utils/AppError';
@@ -6,6 +6,7 @@ import { SERVER_ERROR } from '../../../constants';
 
 const sendEmailConfirmationLink = async (
   user: UserDocInterface,
+  req: Request,
   next: NextFunction
 ) => {
   const confirmToken = user.createEmailConfirmToken();
@@ -20,7 +21,7 @@ const sendEmailConfirmationLink = async (
     await user.save({ validateBeforeSave: false });
 
     return next(
-      new AppError('An Error occurred. Please try again later', SERVER_ERROR)
+      new AppError(req.i18n.t('msg.serverErrorOccurred'), SERVER_ERROR)
     );
   }
 };
