@@ -3,12 +3,12 @@
     "_id": "5c88fa8cf4afda39709c2935",
     "content": "The First Comment on First Post!",
     "post": "5c88fa8cf4afda39709c2955",
-    "author": "5c8a1dfa2f8fb814b56fa181"
+    "user": "5c8a1dfa2f8fb814b56fa181"
   },
   {
     "_id": "5c88fa8af4afda39709c2957",
     "content": "The First Comment on second post",
     "post": "5c88fa81f4afda39709c2955",
-    "author": "5c8a1dfa2f8fb814b56fa181"
+    "user": "5c8a1dfa2f8fb814b56fa181"
   }
 ]
