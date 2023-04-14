@@ -6,7 +6,7 @@
     "role": "admin",
     "active": true,
     "emailIsConfirmed": true,
-    "password": "$2a$12$l6eTyJ44Q7SH5LQUtTRCqeWy6HtO9.n0sa58kkOovoK2ZdEFP6Dc6"
+    "password": "password"
   },
   {
     "_id": "5c8a1dfa2f8fb814b56fa181",
@@ -15,6 +15,6 @@
     "role": "user",
     "active": true,
     "emailIsConfirmed": true,
-    "password": "$2a$12$l6eTyJ44Q7SH5LQUtTRCqeWy6HtO9.n0sa58kkOovoK2ZdEFP6Dc6"
+    "password": "password"
   }
 ]
