@@ -1,10 +1,10 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose from 'mongoose';
 import { PostDocInterface } from '../interfaces/documents/PostDoc';
 
 const PostSchema = new mongoose.Schema<PostDocInterface>(
   {
     author: {
-      type: Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
     title: {

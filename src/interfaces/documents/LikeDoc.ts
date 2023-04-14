@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface LikeDocInterface {
-  post: ObjectId;
-  user: ObjectId;
+  post: Types.ObjectId;
+  user: Types.ObjectId;
 }

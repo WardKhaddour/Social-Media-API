@@ -1,13 +1,13 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose from 'mongoose';
 import { LikeDocInterface } from '../interfaces/documents/LikeDoc';
 
 const LikeSchema = new mongoose.Schema<LikeDocInterface>({
   post: {
-    type: Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
   },
   user: {
-    type: Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
 });

@@ -1,8 +1,8 @@
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface CommentDocInterface {
-  post: ObjectId;
-  user: ObjectId;
+  post: Types.ObjectId;
+  user: Types.ObjectId;
   content: string;
   addedAt: Date;
 }

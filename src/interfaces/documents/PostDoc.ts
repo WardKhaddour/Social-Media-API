@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface PostDocInterface {
-  author: ObjectId;
+  author: Types.ObjectId;
   title: string;
   content: string;
   category?: string[];

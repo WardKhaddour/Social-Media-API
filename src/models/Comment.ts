@@ -1,13 +1,13 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose from 'mongoose';
 import { CommentDocInterface } from '../interfaces/documents/CommentDoc';
 
 const CommentSchema = new mongoose.Schema<CommentDocInterface>({
   post: {
-    type: Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'Post',
   },
   user: {
-    type: Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
   content: {
