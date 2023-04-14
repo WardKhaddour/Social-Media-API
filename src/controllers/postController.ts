@@ -1,5 +1,11 @@
-import { ObjectId } from 'mongoose';
-import { NOT_FOUND, OK, BAD_REQUEST, FORBIDDEN } from './../constants';
+import {
+  NOT_FOUND,
+  OK,
+  BAD_REQUEST,
+  FORBIDDEN,
+  DELETED,
+  CREATED,
+} from './../constants';
 import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../utils/catchAsync';
 import Post from '../models/Post';
@@ -56,7 +62,7 @@ export const addNewPost = catchAsync(
       content,
     });
 
-    res.status(OK).json({
+    res.status(CREATED).json({
       success: true,
       message: 'Post added successfully',
       data: post,
@@ -74,7 +80,7 @@ export const updatePost = catchAsync(
       return next(new AppError('No post found', NOT_FOUND));
     }
 
-    if (user?.role !== 'admin' || !post.author.equals(user?.id)) {
+    if (user?.role !== 'admin' && !post.author.equals(user?.id)) {
       return next(
         new AppError(
           'You do not have permission to update this post',
@@ -89,6 +95,31 @@ export const updatePost = catchAsync(
       success: true,
       message: 'Post updated successfully',
       data: post,
+    });
+  }
+);
+
+export const deletePost = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+    const { user } = req;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return next(new AppError('No post found', NOT_FOUND));
+    }
+
+    if (user?.role !== 'admin' && !post.author.equals(user?.id)) {
+      return next(
+        new AppError(
+          'You do not have permission to update this post',
+          FORBIDDEN
+        )
+      );
+    }
+    await post.deleteOne();
+    res.status(DELETED).json({
+      success: true,
+      message: 'Post updated successfully',
     });
   }
 );

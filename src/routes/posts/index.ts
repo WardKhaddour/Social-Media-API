@@ -4,6 +4,7 @@ import {
   addNewPost,
   aliasMostPopular,
   updatePost,
+  deletePost,
 } from './../../controllers/postController';
 import { Router } from 'express';
 
@@ -21,5 +22,6 @@ router.use('/:postId/comment', commentRouter);
 router.get('/', getAllPosts);
 router.get('/:postId', getPost);
 router.patch('/:postId', restrictAuthenticated(), updatePost);
+router.delete('/:postId', restrictAuthenticated(), deletePost);
 router.post('/', restrictAuthenticated(), addNewPost);
 export default router;
