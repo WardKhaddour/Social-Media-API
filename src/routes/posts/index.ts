@@ -1,11 +1,18 @@
-import { getPost } from './../../controllers/postController';
+import {
+  getPost,
+  getAllPosts,
+  addNewPost,
+  aliasMostPopular,
+} from './../../controllers/postController';
 import { Router } from 'express';
-import { addNewPost, getAllPosts } from '../../controllers/postController';
+
 import restrictAuthenticated from '../../middleware/restrictAuthenticated';
 import likeRouter from '../like';
 import commentRouter from '../comment';
 
 const router = Router();
+
+router.use('/most-popular', aliasMostPopular, getAllPosts);
 
 router.use('/:postId/like', likeRouter);
 router.use('/:postId/comment', commentRouter);

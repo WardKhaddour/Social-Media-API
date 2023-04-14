@@ -15,6 +15,7 @@ const PostSchema = new mongoose.Schema<PostDocInterface>(
       type: String,
       required: true,
     },
+    category: [String],
     attachment: String,
     likesNum: {
       type: Number,
