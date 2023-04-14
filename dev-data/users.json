@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "5c8a1d5b0190b214360dc057",
+    "name": "Ward Khaddour",
+    "email": "admin@gmail.com",
+    "role": "admin",
+    "active": true,
+    "emailIsConfirmed": true,
+    "password": "$2a$12$l6eTyJ44Q7SH5LQUtTRCqeWy6HtO9.n0sa58kkOovoK2ZdEFP6Dc6"
+  },
+  {
+    "_id": "5c8a1dfa2f8fb814b56fa181",
+    "name": "Ward",
+    "email": "ward@gmail.com",
+    "role": "user",
+    "active": true,
+    "emailIsConfirmed": true,
+    "password": "$2a$12$l6eTyJ44Q7SH5LQUtTRCqeWy6HtO9.n0sa58kkOovoK2ZdEFP6Dc6"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "5c88fa8cf4afda39709c2955",
+    "title": "First Post",
+    "content": "The First Post",
+    "author": "5c8a1dfa2f8fb814b56fa181",
+    "likesNum": 1,
+    "commentsNum": 1
+  },
+  {
+    "_id": "5c88fa81f4afda39709c2955",
+    "title": "Second Post",
+    "content": "The Second Post",
+    "author": "5c8a1dfa2f8fb814b56fa181",
+    "likesNum": 1,
+    "commentsNum": 1
+  }
+]
