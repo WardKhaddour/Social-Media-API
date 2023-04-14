@@ -79,7 +79,7 @@ app.use('/api/v1', (req, res, next) => {
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
-app.use('/api/v1/posts', postsRoutes);
+app.use('/api/v1/post', postsRoutes);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, NOT_FOUND));
