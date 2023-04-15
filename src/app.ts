@@ -13,6 +13,7 @@ import i18nMiddleware from 'i18next-http-middleware';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import postsRoutes from './routes/posts';
+import categoryRoutes from './routes/category';
 import { NOT_FOUND } from './constants';
 import AppError from './utils/AppError';
 import globalErrorHandler from './controllers/errorController';
@@ -80,7 +81,7 @@ app.use('/api/v1', (req, res, next) => {
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/user', userRoutes);
 app.use('/api/v1/post', postsRoutes);
-
+app.use('/api/v1/category', categoryRoutes);
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, NOT_FOUND));
 });

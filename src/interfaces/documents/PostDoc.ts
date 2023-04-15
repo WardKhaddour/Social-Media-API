@@ -4,7 +4,7 @@ export interface PostDocInterface {
   author: Types.ObjectId;
   title: string;
   content: string;
-  category?: string[];
+  category?: Types.ObjectId[];
   attachment?: string;
   publishedAt?: Date;
   likesNum: number;

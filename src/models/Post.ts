@@ -15,7 +15,10 @@ const PostSchema = new mongoose.Schema<PostDocInterface>(
       type: String,
       required: true,
     },
-    category: [String],
+    category: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'Category',
+    },
     attachment: String,
     likesNum: {
       type: Number,
