@@ -131,12 +131,30 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
         await this.save();
       },
     },
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
 );
+
+UserSchema.virtual('posts', {
+  ref: 'Post',
+  foreignField: 'author',
+  localField: '_id',
+});
 
 UserSchema.pre(/^find/, function (next) {
   if (!this.getOptions().disableMiddleware) {
     this.find({ active: true });
+  }
+
+  next();
+});
+
+UserSchema.pre(/^find/, function (next) {
+  if (this.getOptions().notAuth) {
+    this.select(
+      '-totalLoginAttempts -role -__v -emailIsConfirmed -passwordChangedAt'
+    );
   }
 
   next();
