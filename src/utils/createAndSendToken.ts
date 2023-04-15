@@ -1,4 +1,4 @@
-import { UserDocInterface } from '../../../interfaces/documents/UserDoc';
+import { UserDocInterface } from '../interfaces/documents/UserDoc';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 

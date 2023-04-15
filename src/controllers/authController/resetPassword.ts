@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import crypto from 'crypto';
 
-import catchAsync from '../../../utils/catchAsync';
-import User from '../../../models/User';
-import AppError from '../../../utils/AppError';
-import { BAD_REQUEST, OK } from '../../../constants';
-import createAndSendToken from '../helpers/createAndSendToken';
+import catchAsync from '../../utils/catchAsync';
+import User from '../../models/User';
+import AppError from '../../utils/AppError';
+import { BAD_REQUEST, OK } from '../../constants';
+import createAndSendToken from '../../utils/createAndSendToken';
 
 const resetPassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

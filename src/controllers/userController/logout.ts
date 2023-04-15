@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { OK } from '../../../constants';
+import { OK } from '../../constants';
 
 const logout = (req: Request, res: Response, next: NextFunction) => {
   res.cookie('jwt', null);

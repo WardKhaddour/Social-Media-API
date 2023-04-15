@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import User from '../../../models/User';
-import { UNAUTHORIZED, OK } from '../../../constants';
-import catchAsync from '../../../utils/catchAsync';
-import AppError from '../../../utils/AppError';
-import createAndSendToken from '../helpers/createAndSendToken';
+import User from '../../models/User';
+import { UNAUTHORIZED, OK } from '../../constants';
+import catchAsync from '../../utils/catchAsync';
+import AppError from '../../utils/AppError';
+import createAndSendToken from '../../utils/createAndSendToken';
 
 const updatePassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

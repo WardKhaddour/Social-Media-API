@@ -4,7 +4,7 @@ import validateRequest from '../../middleware/validateRequest';
 import {
   confirmEmail,
   resendConfirmToken,
-} from '../../controllers/authController';
+} from '../../controllers/userController';
 
 const router = Router();
 

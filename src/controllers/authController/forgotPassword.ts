@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
-import catchAsync from '../../../utils/catchAsync';
-import User from '../../../models/User';
-import AppError from '../../../utils/AppError';
-import { NOT_FOUND, SERVER_ERROR } from '../../../constants';
-import Email from '../../../utils/Email';
+import catchAsync from '../../utils/catchAsync';
+import User from '../../models/User';
+import AppError from '../../utils/AppError';
+import { NOT_FOUND, SERVER_ERROR } from '../../constants';
+import Email from '../../utils/Email';
 
 const forgotPassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

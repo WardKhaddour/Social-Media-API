@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { BAD_REQUEST, OK } from '../../../constants';
-import User from '../../../models/User';
-import AppError from '../../../utils/AppError';
-import catchAsync from '../../../utils/catchAsync';
-import createAndSendToken from '../helpers/createAndSendToken';
+import { BAD_REQUEST, OK } from '../../constants';
+import User from '../../models/User';
+import AppError from '../../utils/AppError';
+import catchAsync from '../../utils/catchAsync';
+import createAndSendToken from '../../utils/createAndSendToken';
 import crypto from 'crypto';
 
 const confirmEmail = catchAsync(

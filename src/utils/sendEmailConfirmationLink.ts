@@ -1,8 +1,8 @@
 import { Request, NextFunction } from 'express';
-import { UserDocInterface } from '../../../interfaces/documents/UserDoc';
-import Email from '../../../utils/Email';
-import AppError from '../../../utils/AppError';
-import { SERVER_ERROR } from '../../../constants';
+import { UserDocInterface } from '../interfaces/documents/UserDoc';
+import Email from './Email';
+import AppError from './AppError';
+import { SERVER_ERROR } from '../constants';
 
 const sendEmailConfirmationLink = async (
   user: UserDocInterface,
