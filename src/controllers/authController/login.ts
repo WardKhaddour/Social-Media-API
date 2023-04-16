@@ -14,7 +14,7 @@ const login = catchAsync(
 
     if (!user) {
       return next(
-        new AppError(req.i18n.t('msg.invalidCredentials'), UNAUTHORIZED)
+        new AppError(req.i18n.t('userAuthMsg.invalidCredentials'), UNAUTHORIZED)
       );
     }
 
@@ -25,7 +25,7 @@ const login = catchAsync(
       ).toFixed(2);
       return next(
         new AppError(
-          req.i18n.t('msg.timeToLogin', { remainingTime }),
+          req.i18n.t('userAuthMsg.timeToLogin', { remainingTime }),
           UNAUTHORIZED
         )
       );
@@ -40,7 +40,9 @@ const login = catchAsync(
       await user.handleLoginAttemptFail();
       return next(
         new AppError(
-          req.i18n.t('msg.failedLogin', { remaining: user.totalLoginAttempts }),
+          req.i18n.t('userAuthMsg.failedLogin', {
+            remaining: user.totalLoginAttempts,
+          }),
           UNAUTHORIZED
         )
       );
@@ -48,7 +50,7 @@ const login = catchAsync(
 
     await user.resetTotalAttempts();
 
-    createAndSendToken(user, OK, req.i18n.t('msg.loggedIn'), req, res);
+    createAndSendToken(user, OK, req.i18n.t('userAuthMsg.loggedIn'), req, res);
   }
 );
 

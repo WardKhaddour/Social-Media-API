@@ -1,5 +1,5 @@
 {
-  "msg": {
+  "userAuthMsg": {
     "incorrectPassword": "كلمة المرور خاطئة، الرجاء المحاولة لاحقاً",
     "serverErrorOccurred": "حدث خطأ ما، الرجاء المحاولة لاحقاً",
     "confirmNewEmail": "قم بتأكيد بريد الالكتروني",

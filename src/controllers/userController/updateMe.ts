@@ -14,12 +14,12 @@ export const updateMe = catchAsync(
       photo = req.file.filename;
     }
 
-    let resMessage = req.i18n.t('msg.userUpdated');
+    let resMessage = req.i18n.t('userAuthMsg.userUpdated');
 
     if (email && user.email !== email) {
       user.email = email;
       user.emailIsConfirmed = false;
-      resMessage += req.i18n.t('msg.confirmNewEmail');
+      resMessage += req.i18n.t('userAuthMsg.confirmNewEmail');
       const confirmToken = user.createEmailConfirmToken();
 
       try {
@@ -31,7 +31,10 @@ export const updateMe = catchAsync(
         await user.save({ validateBeforeSave: false });
 
         return next(
-          new AppError(req.i18n.t('msg.serverErrorOccurred'), SERVER_ERROR)
+          new AppError(
+            req.i18n.t('userAuthMsg.serverErrorOccurred'),
+            SERVER_ERROR
+          )
         );
       }
     }

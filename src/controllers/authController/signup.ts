@@ -18,7 +18,9 @@ const signup = catchAsync(
     let user = await query.exec();
 
     if (user && user.active) {
-      return next(new AppError(req.i18n.t('msg.usedEmail'), BAD_REQUEST));
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.usedEmail'), BAD_REQUEST)
+      );
     }
 
     if (!user) {
@@ -35,7 +37,7 @@ const signup = catchAsync(
     createAndSendToken(
       user,
       OK,
-      req.i18n.t('msg.createdAccountSuccess'),
+      req.i18n.t('userAuthMsg.createdAccountSuccess'),
       req,
       res
     );

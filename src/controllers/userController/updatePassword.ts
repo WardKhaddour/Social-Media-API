@@ -16,14 +16,23 @@ const updatePassword = catchAsync(
       !(await user.isCorrectPassword(currentPassword, user.password))
     ) {
       return next(
-        new AppError(req.i18n.t('msg.currentPasswordWrong'), UNAUTHORIZED)
+        new AppError(
+          req.i18n.t('userAuthMsg.currentPasswordWrong'),
+          UNAUTHORIZED
+        )
       );
     }
 
     user.password = password;
     await user.save();
 
-    createAndSendToken(user, OK, req.i18n.t('msg.changedPassword'), req, res);
+    createAndSendToken(
+      user,
+      OK,
+      req.i18n.t('userAuthMsg.changedPassword'),
+      req,
+      res
+    );
   }
 );
 

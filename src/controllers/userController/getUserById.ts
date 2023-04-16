@@ -20,7 +20,7 @@ const getUserById = async (req: Request, res: Response, next: NextFunction) => {
 
   res.status(OK).json({
     success: true,
-    message: req.i18n.t('msg.gotUserSuccess'),
+    message: req.i18n.t('userAuthMsg.gotUserSuccess'),
     data: {
       user,
     },

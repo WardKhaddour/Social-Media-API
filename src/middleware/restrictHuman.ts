@@ -15,7 +15,7 @@ const restrictHuman = async (
   const { recaptchaToken } = req.body;
   const isHuman = await validateHuman(recaptchaToken!);
   if (!isHuman) {
-    return next(new AppError(req.i18n.t('msg.bot'), BAD_REQUEST));
+    return next(new AppError(req.i18n.t('userAuthMsg.bot'), BAD_REQUEST));
   }
 
   next();

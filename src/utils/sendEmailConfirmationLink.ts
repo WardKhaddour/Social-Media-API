@@ -21,7 +21,7 @@ const sendEmailConfirmationLink = async (
     await user.save({ validateBeforeSave: false });
 
     return next(
-      new AppError(req.i18n.t('msg.serverErrorOccurred'), SERVER_ERROR)
+      new AppError(req.i18n.t('userAuthMsg.serverErrorOccurred'), SERVER_ERROR)
     );
   }
 };

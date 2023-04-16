@@ -21,7 +21,7 @@ const resetPassword = catchAsync(
 
     if (!user) {
       return next(
-        new AppError(req.i18n.t('msg.invalidExpiredToken'), BAD_REQUEST)
+        new AppError(req.i18n.t('userAuthMsg.invalidExpiredToken'), BAD_REQUEST)
       );
     }
 
@@ -30,7 +30,13 @@ const resetPassword = catchAsync(
     user.passwordResetExpires = undefined;
 
     await user.save();
-    createAndSendToken(user, OK, req.i18n.t('msg.changedPassword'), req, res);
+    createAndSendToken(
+      user,
+      OK,
+      req.i18n.t('userAuthMsg.changedPassword'),
+      req,
+      res
+    );
   }
 );
 

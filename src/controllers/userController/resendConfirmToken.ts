@@ -17,7 +17,7 @@ const resendConfirmToken = catchAsync(
 
     res.status(OK).json({
       success: true,
-      message: req.i18n.t('msg.tokenSent'),
+      message: req.i18n.t('userAuthMsg.tokenSent'),
     });
   }
 );

@@ -11,7 +11,7 @@ const multerFilter = (
   cb: multer.FileFilterCallback
 ) => {
   if (file.mimetype.startsWith('image')) cb(null, true);
-  else cb(new AppError(req.i18n.t('msg.notImage'), BAD_REQUEST));
+  else cb(new AppError(req.i18n.t('userAuthMsg.notImage'), BAD_REQUEST));
 };
 
 const upload = multer({

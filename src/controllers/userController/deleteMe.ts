@@ -14,7 +14,7 @@ const deleteMe = catchAsync(
 
     if (!(await user.isCorrectPassword(password, user.password))) {
       return next(
-        new AppError(req.i18n.t('msg.incorrectPassword'), UNAUTHORIZED)
+        new AppError(req.i18n.t('userAuthMsg.incorrectPassword'), UNAUTHORIZED)
       );
     }
     user.active = false;

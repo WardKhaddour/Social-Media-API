@@ -15,7 +15,7 @@ const checkAuthenticated = catchAsync(
     const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
     res.status(OK).json({
       success: true,
-      message: req.i18n.t('msg.welcome'),
+      message: req.i18n.t('userAuthMsg.welcome'),
       data: {
         user: {
           name: user.name,

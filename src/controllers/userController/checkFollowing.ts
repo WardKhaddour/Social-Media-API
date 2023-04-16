@@ -24,7 +24,7 @@ const checkFollowing = async (
 
   res.status(OK).json({
     success: true,
-    message: req.i18n.t('msg.gotUserSuccess'),
+    message: req.i18n.t('userAuthMsg.gotUserSuccess'),
     data: {
       isFollowing,
     },

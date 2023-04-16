@@ -20,7 +20,7 @@ const confirmEmail = catchAsync(
 
     if (!user) {
       return next(
-        new AppError(req.i18n.t('msg.invalidExpiredToken'), BAD_REQUEST)
+        new AppError(req.i18n.t('userAuthMsg.invalidExpiredToken'), BAD_REQUEST)
       );
     }
 
@@ -29,7 +29,7 @@ const confirmEmail = catchAsync(
     user.emailConfirmExpires = undefined;
 
     await user.save();
-    createAndSendToken(user, OK, req.i18n.t('msg.welcome'), req, res);
+    createAndSendToken(user, OK, req.i18n.t('userAuthMsg.welcome'), req, res);
   }
 );
 
