@@ -7,6 +7,7 @@ import APIFeatures from '../../utils/APIFeatures';
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const features = new APIFeatures(Post.find(), req.query)
+      .filterByCategory()
       .filter()
       .sort()
       .limitFields()

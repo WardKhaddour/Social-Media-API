@@ -11,10 +11,12 @@ import { Router } from 'express';
 import restrictAuthenticated from '../../middleware/restrictAuthenticated';
 import likeRouter from '../like';
 import commentRouter from '../comment';
+import aliasPostsByCategory from '../../controllers/postController/aliasPostsByCategory';
 
 const router = Router();
 
 router.use('/most-popular', aliasMostPopular, getAllPosts);
+router.use('/category/:category', aliasPostsByCategory, getAllPosts);
 
 router.use('/:postId/like', likeRouter);
 router.use('/:postId/comment', commentRouter);
