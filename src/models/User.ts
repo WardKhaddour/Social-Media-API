@@ -43,11 +43,11 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
       default: 'user',
       enum: ['user', 'admin'],
     },
-    followers: {
+    followersNum: {
       type: Number,
       default: 0,
     },
-    following: {
+    followingNum: {
       type: Number,
       default: 0,
     },
@@ -142,6 +142,18 @@ UserSchema.virtual('posts', {
   localField: '_id',
 });
 
+UserSchema.virtual('follower', {
+  ref: 'Follow',
+  foreignField: 'follower',
+  localField: '_id',
+});
+
+UserSchema.virtual('following', {
+  ref: 'Follow',
+  foreignField: 'following',
+  localField: '_id',
+});
+
 UserSchema.pre(/^find/, function (next) {
   if (!this.getOptions().disableMiddleware) {
     this.find({ active: true });
@@ -151,7 +163,7 @@ UserSchema.pre(/^find/, function (next) {
 });
 
 UserSchema.pre(/^find/, function (next) {
-  if (this.getOptions().notAuth) {
+  if (this.getOptions().notAuthData) {
     this.select(
       '-totalLoginAttempts -role -__v -emailIsConfirmed -passwordChangedAt'
     );

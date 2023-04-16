@@ -6,3 +6,5 @@ export { default as logout } from './logout';
 export { default as resendConfirmToken } from './resendConfirmToken';
 export { updateMe } from './updateMe';
 export { default as updatePassword } from './updatePassword';
+export { default as toggleFollowUser } from './toggleFollowUser';
+export { default as checkFollowing } from './checkFollowing';
