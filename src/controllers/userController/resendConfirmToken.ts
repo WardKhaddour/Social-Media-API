@@ -10,7 +10,7 @@ const resendConfirmToken = catchAsync(
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
       return next(
-        new AppError('No user found with this email address', NOT_FOUND)
+        new AppError(req.i18n.t('userAuthMsg.noUserEmail'), NOT_FOUND)
       );
     }
     await sendEmailConfirmationLink(user, req, next);

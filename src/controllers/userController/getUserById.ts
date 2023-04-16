@@ -15,7 +15,7 @@ const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   const user = await query;
 
   if (!user) {
-    return next(new AppError('User Not Found', NOT_FOUND));
+    return next(new AppError(req.i18n.t('userAuthMsg.noUser'), NOT_FOUND));
   }
 
   res.status(OK).json({

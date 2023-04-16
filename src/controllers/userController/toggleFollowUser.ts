@@ -15,7 +15,9 @@ const toggleFollowUser = async (
   const { userId: userToFollowId } = req.params;
 
   if (user._id.equals(userToFollowId)) {
-    return next(new AppError('You cannot follow your self', BAD_REQUEST));
+    return next(
+      new AppError(req.i18n.t('followMsg.noFollowYourself'), BAD_REQUEST)
+    );
   }
   User.findById(userToFollowId);
 
@@ -28,7 +30,7 @@ const toggleFollowUser = async (
   ]);
 
   if (!userToFollow) {
-    return next(new AppError('User Not Fount', NOT_FOUND));
+    return next(new AppError(req.i18n.t('userAuthMsg.noUser'), NOT_FOUND));
   }
 
   if (isFollowing) {
@@ -41,7 +43,9 @@ const toggleFollowUser = async (
     ]);
     return res.status(OK).json({
       success: true,
-      message: `Un followed ${userToFollow.name} successfully`,
+      message: req.i18n.t('followMsg.unfollowedUserSuccess', {
+        name: userToFollow.name,
+      }),
       data: {
         userToFollow: {
           followers: userToFollow.followersNum,
@@ -62,7 +66,9 @@ const toggleFollowUser = async (
   ]);
   return res.status(OK).json({
     success: true,
-    message: `Followed ${userToFollow.name} successfully`,
+    message: req.i18n.t('followMsg.followedUserSuccess', {
+      name: userToFollow.name,
+    }),
     data: {
       userToFollow: {
         followers: userToFollow.followersNum,

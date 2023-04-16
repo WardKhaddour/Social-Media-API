@@ -32,7 +32,8 @@
     "bot": "Caught you, bot!",
     "noPermissions": "You do not have permission to perform this action",
     "notImage": "Not an image! Please upload only images",
-    "invalidEmail": "Please provide a valid E-Mail"
+    "invalidEmail": "Please provide a valid E-Mail",
+    "noUser": "User Not Found"
   },
   "categoryMsg": {
     "noCategory": "No Category Found",
@@ -52,5 +53,10 @@
     "commentAdded": "Comment Added Successfully",
     "commentUpdated": "Comment Updated Successfully",
     "commentDeleted": "Comment Deleted Successfully"
+  },
+  "followMsg": {
+    "noFollowYourself": "You Cannot Follow Your Self",
+    "followedUserSuccess": "Followed {{name}} successfully",
+    "unfollowedUserSuccess": "Unfollowed {{name}} successfully"
   }
 }

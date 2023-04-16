@@ -12,7 +12,7 @@ const checkFollowing = async (
   const currentUserId = req.user?._id;
 
   if (!userToFollowId) {
-    return next(new AppError('User Not Found', NOT_FOUND));
+    return next(new AppError(req.i18n.t('userAuthMsg.noUser'), NOT_FOUND));
   }
 
   const isFollowing = (await Follow.findOne({
@@ -24,7 +24,6 @@ const checkFollowing = async (
 
   res.status(OK).json({
     success: true,
-    message: req.i18n.t('userAuthMsg.gotUserSuccess'),
     data: {
       isFollowing,
     },
