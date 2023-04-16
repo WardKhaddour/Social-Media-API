@@ -19,9 +19,11 @@ router.use('/most-popular', aliasMostPopular, getAllPosts);
 router.use('/:postId/like', likeRouter);
 router.use('/:postId/comment', commentRouter);
 
-router.get('/', getAllPosts);
-router.get('/:postId', getPost);
-router.patch('/:postId', restrictAuthenticated(), updatePost);
-router.delete('/:postId', restrictAuthenticated(), deletePost);
-router.post('/', restrictAuthenticated(), addNewPost);
+router.route('/').get(getAllPosts).post(restrictAuthenticated(), addNewPost);
+
+router
+  .route('/:postId')
+  .get(getPost)
+  .patch(restrictAuthenticated(), updatePost)
+  .delete(restrictAuthenticated(), deletePost);
 export default router;

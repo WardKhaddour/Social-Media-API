@@ -9,9 +9,14 @@ import { addNewComment } from '../../controllers/commentController';
 
 const router = Router({ mergeParams: true });
 
-router.post('/', restrictAuthenticated(), addNewComment);
-router.get('/', getCommentsOnPost);
+router
+  .route('/')
+  .get(getCommentsOnPost)
+  .post(restrictAuthenticated(), addNewComment);
 
-router.patch('/:commentId', restrictAuthenticated(), updateComment);
-router.delete('/:commentId', restrictAuthenticated(), deleteComment);
+router
+  .route('/:commentId')
+  .patch(restrictAuthenticated(), updateComment)
+  .delete(restrictAuthenticated(), deleteComment);
+
 export default router;
