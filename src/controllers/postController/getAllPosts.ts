@@ -15,7 +15,6 @@ const getAllPosts = catchAsync(
     const posts = await features.query;
     res.status(OK).json({
       success: true,
-      message: 'Posts fetched successfully',
       data: posts,
     });
   }

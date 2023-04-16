@@ -10,7 +10,7 @@ export const getPost = catchAsync(
 
     const post = await Post.findById(postId).populate('comments');
     if (!post) {
-      return next(new AppError('No post found', NOT_FOUND));
+      return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
     }
 
     res.status(OK).json({

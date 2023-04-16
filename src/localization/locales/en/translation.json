@@ -33,5 +33,24 @@
     "noPermissions": "You do not have permission to perform this action",
     "notImage": "Not an image! Please upload only images",
     "invalidEmail": "Please provide a valid E-Mail"
+  },
+  "categoryMsg": {
+    "noCategory": "No Category Found",
+    "categoryExists": "Category already exists",
+    "categoryAdded": "Category Added Successfully",
+    "categoryUpdated": "Category Updated Successfully",
+    "categoryDeleted": "Category Deleted Successfully"
+  },
+  "postMsg": {
+    "noPost": "No Post Found",
+    "postAdded": "Post Added Successfully",
+    "postUpdated": "Post Updated Successfully",
+    "postDeleted": "Post Deleted Successfully"
+  },
+  "commentMsg": {
+    "noComment": "No Comment Found",
+    "commentAdded": "Comment Added Successfully",
+    "commentUpdated": "Comment Updated Successfully",
+    "commentDeleted": "Comment Deleted Successfully"
   }
 }

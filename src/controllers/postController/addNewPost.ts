@@ -16,7 +16,7 @@ const addNewPost = catchAsync(
 
     res.status(CREATED).json({
       success: true,
-      message: 'Post added successfully',
+      message: req.i18n.t('postMsg.postAdded'),
       data: post,
     });
   }

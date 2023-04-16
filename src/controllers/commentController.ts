@@ -11,7 +11,7 @@ export const addNewComment = catchAsync(
     const { content } = req.body;
     const post = await Post.findById(postId);
     if (!post) {
-      return next(new AppError('No Post Fount', NOT_FOUND));
+      return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
     }
     const user = req.user;
     await Comment.create({
@@ -33,7 +33,7 @@ export const getCommentsOnPost = catchAsync(
     const { postId } = req.params;
     const post = await Post.findById(postId);
     if (!post) {
-      return next(new AppError('No Post Fount', NOT_FOUND));
+      return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
     }
 
     const comments = await Comment.find({
@@ -57,22 +57,19 @@ export const updateComment = catchAsync(
     const { user } = req;
     const comment = await Comment.findById(commentId);
     if (!comment) {
-      return next(new AppError('No comment found', NOT_FOUND));
+      return next(new AppError(req.i18n.t('commentMsg.noComment'), NOT_FOUND));
     }
 
     if (user?.role !== 'admin' && !comment.user.equals(user?.id)) {
       return next(
-        new AppError(
-          'You do not have permission to update this comment',
-          FORBIDDEN
-        )
+        new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
     }
     comment.content = content || comment.content;
     await comment.save();
     res.status(OK).json({
       success: true,
-      message: 'Comment updated successfully',
+      message: req.i18n.t('commentMsg.commentUpdated'),
       data: comment,
     });
   }
@@ -84,21 +81,17 @@ export const deleteComment = catchAsync(
     const { user } = req;
     const comment = await Comment.findById(commentId);
     if (!comment) {
-      return next(new AppError('No comment found', NOT_FOUND));
+      return next(new AppError(req.i18n.t('commentMsg.noComment'), NOT_FOUND));
     }
 
     if (user?.role !== 'admin' && !comment.user.equals(user?.id)) {
       return next(
-        new AppError(
-          'You do not have permission to update this comment',
-          FORBIDDEN
-        )
+        new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
     }
     await comment.deleteOne();
     res.status(DELETED).json({
       success: true,
-      message: 'Comment updated successfully',
     });
   }
 );

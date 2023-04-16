@@ -9,21 +9,18 @@ const deletePost = catchAsync(
     const { user } = req;
     const post = await Post.findById(postId);
     if (!post) {
-      return next(new AppError('No post found', NOT_FOUND));
+      return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
     }
 
     if (user?.role !== 'admin' && !post.author.equals(user?.id)) {
       return next(
-        new AppError(
-          'You do not have permission to update this post',
-          FORBIDDEN
-        )
+        new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
     }
     await post.deleteOne();
     res.status(DELETED).json({
       success: true,
-      message: 'Post updated successfully',
+      message: req.i18n.t('postMsg.postDeleted'),
     });
   }
 );

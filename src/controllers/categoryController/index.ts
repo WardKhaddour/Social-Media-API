@@ -26,7 +26,9 @@ export const addNewCategory = catchAsync(
     });
 
     if (foundedCategory) {
-      return next(new AppError('Category already exists', BAD_REQUEST));
+      return next(
+        new AppError(req.i18n.t('categoryMsg.categoryExists'), BAD_REQUEST)
+      );
     }
 
     const category = await Category.create({
@@ -35,7 +37,7 @@ export const addNewCategory = catchAsync(
 
     res.status(CREATED).json({
       success: true,
-      message: 'Category Added Successfully',
+      message: req.i18n.t('categoryMsg.categoryAdded'),
       data: {
         category: {
           name: category?.name,
@@ -52,11 +54,13 @@ export const updateCategory = catchAsync(
     const category = await Category.findById(categoryId);
 
     if (!category) {
-      return next(new AppError('No Category Found!', NOT_FOUND));
+      return next(
+        new AppError(req.i18n.t('categoryMsg.noCategory'), NOT_FOUND)
+      );
     }
 
     if (category.name === name) {
-      return next(new AppError('Category already exists', BAD_REQUEST));
+      new AppError(req.i18n.t('categoryMsg.categoryExists'), BAD_REQUEST);
     }
 
     category.name = name;
@@ -64,7 +68,7 @@ export const updateCategory = catchAsync(
 
     res.status(OK).json({
       success: true,
-      message: 'Category Updated Successfully',
+      message: req.i18n.t('categoryMsg.categoryUpdated'),
       data: {
         category: {
           name: category?.name,

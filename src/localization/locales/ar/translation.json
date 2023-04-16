@@ -33,5 +33,24 @@
     "noPermissions": "ليس لديك الصلاحيات للقيام بهذه العملية",
     "notImage": "ليست صورة، قم بتحميل الصور فقط",
     "invalidEmail": "الرجاء ادخال بريد الكتروني صالح"
+  },
+  "categoryMsg": {
+    "noCategory": "الفئة غير موجود",
+    "categoryExists": "الفئة موجودة بالفعل",
+    "categoryAdded": "تم اضافة الفئة بنجاح",
+    "categoryUpdated": "تم تعديل الفئة بنجاح",
+    "categoryDeleted": "تم حذف الفئة بنجاح"
+  },
+  "postMsg": {
+    "noPost": "المنشور غير موجود",
+    "postAdded": "تم اضافة المنشور بنجاح",
+    "postUpdated": "تم تعديل المنشور بنجاح",
+    "postDeleted": "تم حذف المنشور بنجاح"
+  },
+  "commentMsg": {
+    "noComment": "التعليق غير موجود",
+    "commentAdded": "تم اضافة التعليق بنجاح",
+    "commentUpdated": "تم تعديل التعليق بنجاح",
+    "commentDeleted": "تم حذف التعليق بنجاح"
   }
 }
