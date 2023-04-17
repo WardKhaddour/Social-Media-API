@@ -8,3 +8,4 @@ export { updateMe } from './updateMe';
 export { default as updatePassword } from './updatePassword';
 export { default as toggleFollowUser } from './toggleFollowUser';
 export { default as checkFollowing } from './checkFollowing';
+export { default as getAllUsers } from './getAllUsers';

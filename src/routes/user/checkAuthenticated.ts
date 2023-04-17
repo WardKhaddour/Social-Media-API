@@ -5,6 +5,6 @@ import restrictAuthenticated from '../../middleware/restrictAuthenticated';
 
 const router = Router();
 
-router.get('/', restrictAuthenticated(), checkAuthenticated);
+router.get('/is-auth', restrictAuthenticated(), checkAuthenticated);
 
 export default router;

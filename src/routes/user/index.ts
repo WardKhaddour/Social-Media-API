@@ -8,9 +8,11 @@ import updatePassword from './updatePassword';
 import getUserById from './getUserById';
 import toggleFollow from './toggleFollow';
 import checkFollowing from './checkFollowing';
+import getAllUsers from './getAllUsers';
 
 const router = Router();
 
+router.use(getAllUsers);
 router.use(checkAuthenticated);
 router.use(confirmEmail);
 router.use(deleteMe);
