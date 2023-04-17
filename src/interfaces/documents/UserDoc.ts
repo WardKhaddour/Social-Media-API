@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import {Types, Document } from 'mongoose';
 
 export interface UserDocInterface extends Document {
   email: string;
@@ -6,6 +6,7 @@ export interface UserDocInterface extends Document {
   role: string;
   followersNum: number;
   followingNum: number;
+  savedPosts: [Types.ObjectId];
   totalLoginAttempts: number;
   loginAttemptsAt: Date;
   name?: string;

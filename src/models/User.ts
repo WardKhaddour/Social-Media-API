@@ -51,6 +51,7 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
       type: Number,
       default: 0,
     },
+    savedPosts: [mongoose.Schema.Types.ObjectId],
     passwordChangedAt: Date,
     emailConfirmToken: String,
     emailConfirmExpires: Date,

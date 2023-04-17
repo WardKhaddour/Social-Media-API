@@ -6,6 +6,8 @@ import {
   updatePost,
   deletePost,
   getPostsByFollowing,
+  getSavedPosts,
+  toggleSavePost,
 } from './../../controllers/postController';
 import { Router } from 'express';
 
@@ -25,6 +27,9 @@ router.use('/:postId/like', likeRouter);
 router.use('/:postId/comment', commentRouter);
 
 router.route('/').get(getAllPosts).post(restrictAuthenticated(), addNewPost);
+
+router.get('/saved', restrictAuthenticated(), getSavedPosts);
+router.post('/saved/:postId', restrictAuthenticated(), toggleSavePost);
 
 router
   .route('/:postId')
