@@ -17,7 +17,7 @@ const addNewPost = catchAsync(
     res.status(CREATED).json({
       success: true,
       message: req.i18n.t('postMsg.postAdded'),
-      data: post,
+      data: {post},
     });
   }
 );

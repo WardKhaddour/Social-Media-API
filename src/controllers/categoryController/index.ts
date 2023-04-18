@@ -12,7 +12,7 @@ export const getAllCategories = catchAsync(
 
     res.status(OK).json({
       success: true,
-      data: categories,
+      data: {categories},
     });
   }
 );

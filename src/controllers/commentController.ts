@@ -45,7 +45,7 @@ export const getCommentsOnPost = catchAsync(
 
     res.status(200).json({
       success: true,
-      data: comments,
+      data: {comments},
     });
   }
 );
@@ -70,7 +70,7 @@ export const updateComment = catchAsync(
     res.status(OK).json({
       success: true,
       message: req.i18n.t('commentMsg.commentUpdated'),
-      data: comment,
+      data: {comment},
     });
   }
 );

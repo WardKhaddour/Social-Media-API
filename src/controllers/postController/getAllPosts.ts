@@ -15,7 +15,7 @@ const getAllPosts = catchAsync(
     const posts = await features.query;
     res.status(OK).json({
       success: true,
-      data: posts,
+      data: { posts },
     });
   }
 );

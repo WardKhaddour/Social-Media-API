@@ -15,7 +15,7 @@ const getAllUsers = catchAsync(
     const users = await features.query;
     res.status(OK).json({
       success: true,
-      data: users,
+      data: { users },
     });
   }
 );

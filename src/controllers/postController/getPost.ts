@@ -15,7 +15,7 @@ export const getPost = catchAsync(
 
     res.status(OK).json({
       success: true,
-      data: post,
+      data: { post },
     });
   }
 );
