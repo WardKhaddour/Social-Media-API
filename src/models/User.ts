@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
       default: 10,
     },
     loginAttemptsAt: Date,
-    photo: {
+    photoSrc: {
       type: String,
       required: false,
       default: 'default-user-photo.png',
@@ -153,6 +153,16 @@ UserSchema.virtual('following', {
   ref: 'Follow',
   foreignField: 'following',
   localField: '_id',
+});
+
+UserSchema.virtual('photo').get(function () {
+  const currentUrl =
+    process.env.NODE_ENV === 'production'
+      ? process.env.PROD_URL
+      : process.env.DEV_URL;
+
+  const userPhotoSrc = `${currentUrl}/images/users/${this.photoSrc}`;
+  return userPhotoSrc;
 });
 
 UserSchema.pre(/^find/, function (next) {

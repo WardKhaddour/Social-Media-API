@@ -7,12 +7,6 @@ const checkAuthenticated = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user!;
 
-    const currentUrl =
-      process.env.NODE_ENV === 'production'
-        ? process.env.PROD_URL
-        : process.env.DEV_URL;
-
-    const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
     res.status(OK).json({
       success: true,
       message: req.i18n.t('userAuthMsg.welcome'),
@@ -20,7 +14,7 @@ const checkAuthenticated = catchAsync(
         user: {
           name: user.name,
           email: user.email,
-          photo: userPhotoSrc,
+          photo: user.photo,
           emailIsConfirmed: user.emailIsConfirmed,
         },
       },

@@ -40,13 +40,8 @@ export const updateMe = catchAsync(
     }
 
     user.name = name || user.name;
-    user.photo = photo || user.photo;
-    const currentUrl =
-      process.env.NODE_ENV === 'production'
-        ? process.env.PROD_URL
-        : process.env.DEV_URL;
+    user.photoSrc = photo || user.photoSrc;
 
-    const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
     await user.save({ validateBeforeSave: false });
     res.status(OK).json({
       success: true,
@@ -55,7 +50,7 @@ export const updateMe = catchAsync(
         user: {
           name: user.name,
           email: user.email,
-          photo: userPhotoSrc,
+          photo: user.photo,
           emailIsConfirmed: user.emailIsConfirmed,
         },
       },

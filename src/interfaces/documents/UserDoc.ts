@@ -1,4 +1,4 @@
-import {Types, Document } from 'mongoose';
+import { Types, Document } from 'mongoose';
 
 export interface UserDocInterface extends Document {
   email: string;
@@ -10,6 +10,7 @@ export interface UserDocInterface extends Document {
   totalLoginAttempts: number;
   loginAttemptsAt: Date;
   name?: string;
+  photoSrc?: String;
   photo?: String;
   passwordChangedAt?: Date;
   emailConfirmToken?: String;

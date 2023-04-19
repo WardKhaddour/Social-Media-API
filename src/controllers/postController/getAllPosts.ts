@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  APIAggregateFeatures,
-  APIQueryFeatures,
-} from './../../utils/APIFeatures';
+import { APIAggregateFeatures } from './../../utils/APIFeatures';
 import { OK } from '../../constants';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
 import User from '../../models/User';
+import Category from '../../models/Category';
 
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -24,6 +22,15 @@ const getAllPosts = catchAsync(
         foreignFieldFields: {
           name: 1,
           _id: 1,
+        },
+      })
+      .populateFields({
+        from: Category.collection.name,
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category',
+        foreignFieldFields: {
+          __v: 0,
         },
       });
 

@@ -29,13 +29,6 @@ const createAndSendToken = (
     cookieOptions.secure = true;
   }
 
-  const currentUrl =
-    process.env.NODE_ENV === 'production'
-      ? process.env.PROD_URL
-      : process.env.DEV_URL;
-
-  const userPhotoSrc = `${currentUrl}/images/users/${user.photo}`;
-
   res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
     success: true,
@@ -44,7 +37,7 @@ const createAndSendToken = (
       user: {
         name: user.name,
         email: user.email,
-        photo: userPhotoSrc,
+        photo: user.photo,
         emailIsConfirmed: user.emailIsConfirmed,
       },
     },
