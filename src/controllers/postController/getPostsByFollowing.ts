@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
 import Follow from '../../models/Follow';
-import APIFeatures from '../../utils/APIFeatures';
+import { APIQueryFeatures } from '../../utils/APIFeatures';
 
 const getPostsByFollowing = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +14,7 @@ const getPostsByFollowing = catchAsync(
       }).select('following')
     ).map(follow => follow.following);
 
-    const features = new APIFeatures(
+    const features = new APIQueryFeatures(
       Post.find({
         author: { $in: [following] },
       }),
@@ -30,7 +30,7 @@ const getPostsByFollowing = catchAsync(
 
     res.status(OK).json({
       success: true,
-      data: posts,
+      data: { posts },
     });
   }
 );

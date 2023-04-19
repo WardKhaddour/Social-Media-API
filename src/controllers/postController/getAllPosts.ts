@@ -1,21 +1,28 @@
-import { OK } from '../../constants';
 import { Request, Response, NextFunction } from 'express';
+import {
+  APIAggregateFeatures,
+  APIQueryFeatures,
+} from './../../utils/APIFeatures';
+import { OK } from '../../constants';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
-import APIFeatures from '../../utils/APIFeatures';
 
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const features = new APIFeatures(Post.find(), req.query)
-      .filterByCategory()
+    const aggregation = new APIAggregateFeatures(Post.aggregate(), req.query)
       .filter()
+      .filterByCategory()
       .sort()
       .limitFields()
       .paginate();
-    const posts = await features.query;
+
+    const posts = await aggregation.aggregate.explain();
+
     res.status(OK).json({
       success: true,
-      data: { posts },
+      data: {
+        posts,
+      },
     });
   }
 );

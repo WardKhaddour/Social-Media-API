@@ -1,10 +1,21 @@
-import { Query, QueryOptions } from 'mongoose';
-import AppError from './AppError';
-import { BAD_REQUEST } from '../constants';
+import { ObjectId } from 'mongodb';
+import { Aggregate, Query, QueryOptions } from 'mongoose';
+import Category from '../models/Category';
 
 type QueryType = Query<any, any>;
 
-class APIFeatures {
+interface AggregateOptions {
+  sort?: string;
+  paginate?: string;
+  filter?: [string];
+  properties?: { [key: string]: string };
+  categories?: [string];
+  fields?: string;
+  page?: number;
+  limit?: number;
+}
+
+export class APIQueryFeatures {
   query: QueryType;
 
   queryString: QueryOptions;
@@ -67,4 +78,94 @@ class APIFeatures {
   }
 }
 
-export default APIFeatures;
+export class APIAggregateFeatures {
+  aggregate: Aggregate<any>;
+  options?: AggregateOptions;
+  constructor(aggregate: Aggregate<any>, options: AggregateOptions = {}) {
+    this.aggregate = aggregate;
+    this.options = options;
+  }
+
+  filter() {
+    const properties = this.options?.properties;
+    if (!properties) {
+      return this;
+    }
+    const excludedProperties = ['page', 'sort', 'limit', 'fields'];
+
+    const requiredProperties = structuredClone(properties);
+    excludedProperties.forEach(property => delete requiredProperties[property]);
+
+    let projectString = JSON.stringify(requiredProperties);
+    projectString = projectString.replace(
+      /\b(gte|gt|lte|lt)\b/g,
+      match => `$${match}`
+    );
+
+    const projectObject = JSON.parse(projectString)
+      .split(',')
+      .map((el: string) => {
+        return { [el]: 1 };
+      });
+
+    this.aggregate.project(projectObject);
+    return this;
+  }
+  filterByCategory() {
+    if (this.options?.categories) {
+      const categoriesIDs = this.options.categories.map(
+        cat => new ObjectId(cat.toString())
+      );
+
+      this.aggregate
+        .match({
+          category: { $in: [categoriesIDs] },
+        })
+        .lookup({
+          from: Category.collection.name,
+          localField: 'category'.toString(),
+          foreignField: '_id'.toString(),
+          as: 'category',
+        });
+    }
+
+    return this;
+  }
+  sort() {
+    if (this.options?.sort) {
+      const sortBy = `${this.options.sort}`.split(',').join(' ');
+      this.aggregate = this.aggregate.sort(sortBy);
+    } else {
+      this.aggregate = this.aggregate.sort('-publishedAt');
+    }
+
+    return this;
+  }
+
+  limitFields() {
+    if (this.options?.fields) {
+      const fields = `${this.options.fields}`.split(',');
+
+      const projectObject = fields.reduce((prev, cur) => {
+        return { ...prev, [cur]: 1 };
+      }, {});
+
+      this.aggregate.project(projectObject);
+    } else {
+      this.aggregate = this.aggregate.project({
+        __v: 0,
+      });
+    }
+
+    return this;
+  }
+  paginate() {
+    const page = this.options?.page ?? 1;
+    const limit = this.options?.limit ?? 20;
+    const skip = (page - 1) * limit;
+
+    this.aggregate = this.aggregate.skip(+skip).limit(+limit);
+
+    return this;
+  }
+}
