@@ -5,6 +5,7 @@ const PostSchema = new mongoose.Schema<PostDocInterface>(
   {
     author: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
     },
     title: {

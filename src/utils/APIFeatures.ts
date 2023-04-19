@@ -173,6 +173,7 @@ export class APIAggregateFeatures {
     foreignField: string;
     as: string;
     foreignFieldFields?: object;
+    asArray?: boolean;
   }) {
     const pipeline = [];
     if (options.foreignFieldFields) {
@@ -187,6 +188,10 @@ export class APIAggregateFeatures {
       as: options.as,
       pipeline,
     });
+
+    if (!options.asArray) {
+      this.aggregate.unwind(options.localField);
+    }
 
     return this;
   }

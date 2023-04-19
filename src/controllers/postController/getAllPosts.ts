@@ -32,6 +32,7 @@ const getAllPosts = catchAsync(
         foreignFieldFields: {
           __v: 0,
         },
+        asArray: true,
       });
 
     const posts = await aggregation.aggregate.exec();
