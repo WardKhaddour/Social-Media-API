@@ -6,6 +6,7 @@ import {
 import { OK } from '../../constants';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
+import User from '../../models/User';
 
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +15,17 @@ const getAllPosts = catchAsync(
       .filterByCategory()
       .sort()
       .limitFields()
-      .paginate();
+      .paginate()
+      .populateFields({
+        from: User.collection.name,
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author',
+        foreignFieldFields: {
+          name: 1,
+          _id: 1,
+        },
+      });
 
     const posts = await aggregation.aggregate.exec();
 

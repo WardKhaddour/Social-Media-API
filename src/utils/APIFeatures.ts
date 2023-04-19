@@ -166,4 +166,28 @@ export class APIAggregateFeatures {
 
     return this;
   }
+
+  populateFields(options: {
+    from: string;
+    localField: string;
+    foreignField: string;
+    as: string;
+    foreignFieldFields?: object;
+  }) {
+    const pipeline = [];
+    if (options.foreignFieldFields) {
+      pipeline.push({
+        $project: options.foreignFieldFields,
+      });
+    }
+    this.aggregate.lookup({
+      from: options.from,
+      localField: options.localField.toString(),
+      foreignField: options.foreignField.toString(),
+      as: options.as,
+      pipeline,
+    });
+
+    return this;
+  }
 }
