@@ -8,7 +8,7 @@ export const getPost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
 
-    const post = await Post.findById(postId).populate('comments');
+    const post = await Post.findById(postId).populate('comments category');
     if (!post) {
       return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
     }

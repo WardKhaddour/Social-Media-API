@@ -16,7 +16,7 @@ const getAllPosts = catchAsync(
       .limitFields()
       .paginate();
 
-    const posts = await aggregation.aggregate.explain();
+    const posts = await aggregation.aggregate.exec();
 
     res.status(OK).json({
       success: true,

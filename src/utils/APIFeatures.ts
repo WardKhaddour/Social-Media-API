@@ -9,7 +9,7 @@ interface AggregateOptions {
   paginate?: string;
   filter?: [string];
   properties?: { [key: string]: string };
-  categories?: [string];
+  category?: string;
   fields?: string;
   page?: number;
   limit?: number;
@@ -112,14 +112,12 @@ export class APIAggregateFeatures {
     return this;
   }
   filterByCategory() {
-    if (this.options?.categories) {
-      const categoriesIDs = this.options.categories.map(
-        cat => new ObjectId(cat.toString())
-      );
+    if (this.options?.category) {
+      const categoryId = new ObjectId(this.options.category.toString());
 
       this.aggregate
         .match({
-          category: { $in: [categoriesIDs] },
+          category: { $in: [categoryId] },
         })
         .lookup({
           from: Category.collection.name,
