@@ -4,5 +4,8 @@ declare global {
     interface Request {
       user?: UserDocInterface;
     }
+    interface Locals {
+      error?: { message: string; statusCode: number };
+    }
   }
 }

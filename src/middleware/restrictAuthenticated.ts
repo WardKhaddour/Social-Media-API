@@ -5,6 +5,7 @@ import catchAsync from '../utils/catchAsync';
 import AppError from '../utils/AppError';
 import { UNAUTHORIZED } from '../constants';
 import User from '../models/User';
+import checkAuthenticated from './checkAuthenticated';
 
 interface CheckAuthenticationOptions {
   withPassword: boolean;
@@ -34,63 +35,13 @@ const restrictAuthenticated = (
       res: express.Response,
       next: express.NextFunction
     ) => {
-      //1) Getting the token and check if exist
-      const token = req.cookies.jwt;
-
-      if (!token) {
-        return next(
-          new AppError(req.i18n.t('userAuthMsg.notLoggedIn'), UNAUTHORIZED)
-        );
-      }
-
-      //2) Verification token
-      const decodedToken = await JWTVerify(token, process.env.JWT_SECRET!);
-
-      const userId =
-        typeof decodedToken === 'string' ? decodedToken : decodedToken?.userId;
-      //3) Check if user still exists
-      const currentUser = options.withPassword
-        ? await User.findById(userId).select('+password')
-        : await User.findById(userId);
-
-      if (!currentUser) {
-        return next(
-          new AppError(req.i18n.t('userAuthMsg.deletedUser'), UNAUTHORIZED)
-        );
-      }
-
-      //4) Check if user changed password after the token was issued
-
-      const tokenIssuedAt =
-        typeof decodedToken === 'string'
-          ? +decodedToken
-          : decodedToken?.iat || 0;
-
-      if (currentUser.changedPasswordAfter(tokenIssuedAt)) {
-        return next(
-          new AppError(
-            req.i18n.t('userAuthMsg.passwordChangedRecently'),
-            UNAUTHORIZED
-          )
-        );
-      }
-
-      // if (!currentUser.emailIsConfirmed) {
-      //   return res.status(UNAUTHORIZED).json({
-      //     success: false,
-      //     message: 'Please confirm your email first',
-      //     data: {
-      //       user: {
-      //         name: currentUser.name,
-      //         email: currentUser.email,
-      //       },
-      //     },
-      //   });
-      // }
-
-      //GRANT ACCESS TO PROTECTED ROUTE
-      req.user = currentUser;
-      next();
+      checkAuthenticated(options)(req, res, () => {
+        const { error } = res.locals;
+        if (error) {
+          return next(new AppError(error.message, error.statusCode));
+        }
+        next();
+      });
     }
   );
 
