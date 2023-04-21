@@ -41,7 +41,7 @@ app.use(
 app.use(helmet());
 
 // Limit requests from same IP
-app.use('/api', limiter);
+// app.use('/api', limiter);
 
 // Cookie parser
 app.use(cookieParser());

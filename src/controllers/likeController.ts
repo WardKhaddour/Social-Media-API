@@ -37,3 +37,25 @@ export const toggleLike = catchAsync(
     });
   }
 );
+
+export const checkLike = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { postId } = req.params;
+    const post = await Post.findById(postId);
+    if (!post) {
+      return next(new AppError('', NOT_FOUND));
+    }
+    const user = req.user;
+    const prevLike = await Like.findOne({
+      user: user?.id,
+      post: postId,
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        isLiked: !!prevLike,
+      },
+    });
+  }
+);
