@@ -38,7 +38,6 @@ const checkAuthenticated = (
       };
       //1) Getting the token and check if exist
       const token = req.cookies.jwt;
-      console.log(token);
 
       if (!token) {
         error.message = req.i18n.t('userAuthMsg.notLoggedIn');

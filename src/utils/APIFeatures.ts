@@ -195,4 +195,12 @@ export class APIAggregateFeatures {
 
     return this;
   }
+
+  addFields(fieldName: string, condition: object) {
+    this.aggregate.addFields({
+      [fieldName]: condition,
+    });
+
+    return this;
+  }
 }

@@ -8,6 +8,7 @@ import Category from '../../models/Category';
 
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const savedPosts = req.user?.savedPosts;
     const aggregation = new APIAggregateFeatures(Post.aggregate(), req.query)
       .filter()
       .filterByCategory()
@@ -33,7 +34,8 @@ const getAllPosts = catchAsync(
           __v: 0,
         },
         asArray: true,
-      });
+      })
+      .addFields('isSaved', { $in: ['$_id', savedPosts] });
 
     const posts = await aggregation.aggregate.exec();
 
