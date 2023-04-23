@@ -12,10 +12,12 @@ const checkAuthenticated = catchAsync(
       message: req.i18n.t('userAuthMsg.welcome'),
       data: {
         user: {
+          _id: user._id,
           name: user.name,
           email: user.email,
           photo: user.photo,
           emailIsConfirmed: user.emailIsConfirmed,
+          hasPhoto: user.photoSrc !== 'default-user-photo.png',
         },
       },
     });

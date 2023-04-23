@@ -34,8 +34,10 @@ const getAllPosts = catchAsync(
           __v: 0,
         },
         asArray: true,
-      })
-      .addFields('isSaved', { $in: ['$_id', savedPosts] });
+      });
+
+    if (savedPosts)
+      aggregation.addFields('isSaved', { $in: ['$_id', savedPosts] });
 
     const posts = await aggregation.aggregate.exec();
 
