@@ -4,14 +4,19 @@ import catchAsync from '../../utils/catchAsync';
 import Email from '../../utils/Email';
 import AppError from '../../utils/AppError';
 import { OK, SERVER_ERROR } from '../../constants';
+import { deleteFile } from '../../utils/file';
 
-export const updateMe = catchAsync(
+const updateMe = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, name } = req.body;
     const user = req.user!;
     let photo = null;
+    let oldPhotoPath: string | null = null;
     if (req.file) {
       photo = req.file.filename;
+      if (user.photoSrc !== 'default-user-photo.png') {
+        oldPhotoPath = `public/images/users/${req.user?.photoSrc}`;
+      }
     }
 
     let resMessage = req.i18n.t('userAuthMsg.userUpdated');
@@ -43,6 +48,9 @@ export const updateMe = catchAsync(
     user.photoSrc = photo || user.photoSrc;
 
     await user.save({ validateBeforeSave: false });
+    if (photo && oldPhotoPath) {
+      deleteFile(oldPhotoPath);
+    }
     res.status(OK).json({
       success: true,
       message: resMessage,
@@ -57,3 +65,5 @@ export const updateMe = catchAsync(
     });
   }
 );
+
+export default updateMe;
