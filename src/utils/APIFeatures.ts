@@ -129,6 +129,24 @@ export class APIAggregateFeatures {
 
     return this;
   }
+
+  filterByMatches(options: {
+    filedName: string;
+    singleMatch?: string;
+    arrayMatches?: any[];
+  }) {
+    if (options.singleMatch) {
+      this.aggregate.match({
+        [options.filedName]: options.singleMatch,
+      });
+    } else if (options.arrayMatches) {
+      this.aggregate.match({
+        [options.filedName]: { $in: options.arrayMatches },
+      });
+    }
+    return this;
+  }
+
   sort() {
     if (this.options?.sort) {
       const sortBy = `${this.options.sort}`.split(',').join(' ');
@@ -196,7 +214,7 @@ export class APIAggregateFeatures {
     return this;
   }
 
-  addFields(fieldName: string, condition: object) {
+  addFields(fieldName: string, condition: any) {
     this.aggregate.addFields({
       [fieldName]: condition,
     });
