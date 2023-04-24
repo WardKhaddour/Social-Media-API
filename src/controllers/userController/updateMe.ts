@@ -60,6 +60,7 @@ const updateMe = catchAsync(
           email: user.email,
           photo: user.photo,
           emailIsConfirmed: user.emailIsConfirmed,
+          hasPhoto: user.photoSrc !== 'default-user-photo.png',
         },
       },
     });

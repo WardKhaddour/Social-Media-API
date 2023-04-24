@@ -4,6 +4,6 @@ import { Router } from 'express';
 
 const router = Router();
 
-router.delete('/photo', restrictAuthenticated(), deleteMyPhoto);
+router.patch('/photo', restrictAuthenticated(), deleteMyPhoto);
 
 export default router;

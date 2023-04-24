@@ -1,9 +1,9 @@
-import { DELETED } from './../../constants';
+import { OK } from './../../constants';
 import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { deleteFile } from '../../utils/file';
 
- const deleteMyPhoto = catchAsync(
+const deleteMyPhoto = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user!;
     if (user.photoSrc !== 'default-user-photo.png') {
@@ -12,9 +12,19 @@ import { deleteFile } from '../../utils/file';
     }
     await user.save({ validateBeforeSave: false });
 
-    res.status(DELETED).json({
+    res.status(OK).json({
       success: true,
       message: 'Photo Deleted Successfully',
+      data: {
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          photo: user.photo,
+          emailIsConfirmed: user.emailIsConfirmed,
+          hasPhoto: user.photoSrc !== 'default-user-photo.png',
+        },
+      },
     });
   }
 );
