@@ -14,7 +14,7 @@ const deleteMyPhoto = catchAsync(
 
     res.status(OK).json({
       success: true,
-      message: 'Photo Deleted Successfully',
+      message: req.i18n.t('userAuthMsg.deletedPhoto'),
       data: {
         user: {
           _id: user._id,

@@ -26,6 +26,7 @@
     "noUserEmail": "There is no user with this email address",
     "tokenSent": "Token sent to your email",
     "passwordChangedRecently": "User recently changed password! Please login again.",
+    "deletedPhoto": "Photo Deleted Successfully",
     "deletedUser": "The user is no longer exists",
     "notLoggedIn": "You are not logged in!! Please login first",
     "unconfirmedEmail": "Please confirm your email first",
