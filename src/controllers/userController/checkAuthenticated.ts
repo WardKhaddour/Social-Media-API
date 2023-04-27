@@ -14,6 +14,7 @@ const checkAuthenticated = catchAsync(
         user: {
           _id: user._id,
           name: user.name,
+          bio: user.bio,
           email: user.email,
           photo: user.photo,
           emailIsConfirmed: user.emailIsConfirmed,

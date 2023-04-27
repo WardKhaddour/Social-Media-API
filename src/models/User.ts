@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
         validator: isValidEmail,
       },
     },
+    bio: String,
     password: {
       type: String,
       required: [true, 'Please provide a password'],
@@ -161,7 +162,7 @@ UserSchema.virtual('photo').get(function () {
       ? process.env.PROD_URL
       : process.env.DEV_URL;
 
-  const userPhotoSrc = `${currentUrl}/images/users/${this.photoSrc}`;
+  const userPhotoSrc: string = `${currentUrl}/images/users/${this.photoSrc}`;
   return userPhotoSrc;
 });
 

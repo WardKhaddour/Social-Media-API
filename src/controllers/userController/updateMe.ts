@@ -8,7 +8,7 @@ import { deleteFile } from '../../utils/file';
 
 const updateMe = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { email, name } = req.body;
+    const { email, name, bio } = req.body;
     const user = req.user!;
     let photo = null;
     let oldPhotoPath: string | null = null;
@@ -45,6 +45,7 @@ const updateMe = catchAsync(
     }
 
     user.name = name || user.name;
+    user.bio = bio || user.bio;
     user.photoSrc = photo || user.photoSrc;
 
     await user.save({ validateBeforeSave: false });
@@ -56,7 +57,9 @@ const updateMe = catchAsync(
       message: resMessage,
       data: {
         user: {
+          _id: user._id,
           name: user.name,
+          bio: user.bio,
           email: user.email,
           photo: user.photo,
           emailIsConfirmed: user.emailIsConfirmed,
