@@ -20,7 +20,10 @@ const UserSchema = new mongoose.Schema<UserDocInterface>(
         validator: isValidEmail,
       },
     },
-    bio: String,
+    bio: {
+      type: String,
+      default: 'New User',
+    },
     password: {
       type: String,
       required: [true, 'Please provide a password'],
