@@ -67,9 +67,9 @@ export class APIQueryFeatures {
 
     return this;
   }
-  paginate() {
+  paginate(options?: { limit?: number }) {
     const page = this.queryString.page ?? 1;
-    const limit = this.queryString.limit ?? 20;
+    const limit = this.queryString.limit || options?.limit || 20;
     const skip = (page - 1) * limit;
 
     this.query = this.query.skip(skip).limit(limit);

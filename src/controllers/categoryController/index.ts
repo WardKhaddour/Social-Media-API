@@ -1,18 +1,24 @@
 import { BAD_REQUEST, NOT_FOUND } from './../../constants';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, query } from 'express';
 
 import catchAsync from '../../utils/catchAsync';
 import Category from '../../models/Category';
 import { CREATED, DELETED, OK } from '../../constants';
 import AppError from '../../utils/AppError';
+import { APIQueryFeatures } from '../../utils/APIFeatures';
 
 export const getAllCategories = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const categories = await Category.find().select('-__v');
+    const features = new APIQueryFeatures(Category.find(), req.query)
+      .paginate({
+        limit: 3,
+      })
+      .limitFields();
+    const categories = await features.query.exec();
 
     res.status(OK).json({
       success: true,
-      data: {categories},
+      data: { categories },
     });
   }
 );
