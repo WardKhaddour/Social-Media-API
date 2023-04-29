@@ -6,18 +6,19 @@ import Post from '../../models/Post';
 
 const addNewPost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { title, content } = req.body;
+    const { title, content, category } = req.body;
     const userId = req.user?.id;
     const post = await Post.create({
       author: userId,
       title,
       content,
+      category,
     });
 
     res.status(CREATED).json({
       success: true,
       message: req.i18n.t('postMsg.postAdded'),
-      data: {post},
+      data: { post },
     });
   }
 );

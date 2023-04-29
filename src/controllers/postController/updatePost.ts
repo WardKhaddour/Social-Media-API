@@ -6,7 +6,7 @@ import Post from '../../models/Post';
 
 const updatePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { title, content } = req.body;
+    const { title, content, category } = req.body;
     const { postId } = req.params;
     const { user } = req;
     const post = await Post.findById(postId);
@@ -21,6 +21,7 @@ const updatePost = catchAsync(
     }
     post.title = title || post.title;
     post.content = content || post.content;
+    post.category = category || post.category;
     await post.save();
     res.status(OK).json({
       success: true,
