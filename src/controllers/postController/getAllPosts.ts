@@ -5,29 +5,45 @@ import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
 import User from '../../models/User';
 import Category from '../../models/Category';
+import { ObjectId } from 'mongodb';
 
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const savedPosts = req.user?.savedPosts;
-    const aggregation = await new APIAggregateFeatures(
+
+    const aggregation = new APIAggregateFeatures(
       Post.aggregate(),
       req.query,
       Post
-    )
+    ).populateFields({
+      from: User.collection.name,
+      localField: 'author',
+      foreignField: '_id',
+      as: 'author',
+      foreignFieldFields: {
+        name: 1,
+        _id: 1,
+      },
+    });
+
+    //Filter Posts by Following
+    if (req.params.byFollowing === '1') {
+      const following =
+        req.params.following.split(',').map(el => new ObjectId(el)) || [];
+
+      delete req.params.following;
+      delete req.params.byFollowing;
+
+      aggregation.aggregate.match({
+        'author._id': { $in: following },
+      });
+    }
+
+    aggregation
       .filter()
       .filterByCategory()
       .sort()
       .limitFields()
-      .populateFields({
-        from: User.collection.name,
-        localField: 'author',
-        foreignField: '_id',
-        as: 'author',
-        foreignFieldFields: {
-          name: 1,
-          _id: 1,
-        },
-      })
       .populateFields({
         from: Category.collection.name,
         localField: 'category',

@@ -4,6 +4,6 @@ export { default as getPost } from './getPost';
 export { default as addNewPost } from './addNewPost';
 export { default as updatePost } from './updatePost';
 export { default as deletePost } from './deletePost';
-export { default as getPostsByFollowing } from './getPostsByFollowing';
+export { default as aliasPostsByFollowing } from './aliasPostsByFollowing';
 export { default as toggleSavePost } from './toggleSavePost';
 export { default as getSavedPosts } from './getSavedPosts';

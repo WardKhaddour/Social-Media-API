@@ -5,7 +5,7 @@ import {
   aliasMostPopular,
   updatePost,
   deletePost,
-  getPostsByFollowing,
+  aliasPostsByFollowing,
   getSavedPosts,
   toggleSavePost,
 } from './../../controllers/postController';
@@ -32,7 +32,12 @@ router.get(
   getAllPosts
 );
 
-router.get('/following', restrictAuthenticated(), getPostsByFollowing);
+router.get(
+  '/following',
+  restrictAuthenticated(),
+  aliasPostsByFollowing,
+  getAllPosts
+);
 
 router.use('/:postId/like', likeRouter);
 router.use('/:postId/comment', commentRouter);
