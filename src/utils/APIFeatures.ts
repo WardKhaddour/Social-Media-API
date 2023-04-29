@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongodb';
-import { Aggregate, Query, QueryOptions } from 'mongoose';
+import { Aggregate, Model, Query, QueryOptions } from 'mongoose';
 import Category from '../models/Category';
 
 type QueryType = Query<any, any>;
@@ -81,9 +81,16 @@ export class APIQueryFeatures {
 export class APIAggregateFeatures {
   aggregate: Aggregate<any>;
   options?: AggregateOptions;
-  constructor(aggregate: Aggregate<any>, options: AggregateOptions = {}) {
+  model?: Model<any>;
+  metaData = { totalPages: 0, page: 1 };
+  constructor(
+    aggregate: Aggregate<any>,
+    options: AggregateOptions = {},
+    model?: Model<any>
+  ) {
     this.aggregate = aggregate;
     this.options = options;
+    this.model = model;
   }
 
   filter() {
@@ -175,13 +182,17 @@ export class APIAggregateFeatures {
 
     return this;
   }
-  paginate() {
+  async paginate() {
     const page = this.options?.page ?? 1;
     const limit = this.options?.limit ?? 20;
     const skip = (page - 1) * limit;
+    let totalDocs = (await this.model?.countDocuments({})) || 1;
 
     this.aggregate = this.aggregate.skip(+skip).limit(+limit);
-
+    this.metaData = {
+      totalPages: Math.ceil(totalDocs / limit),
+      page,
+    };
     return this;
   }
 

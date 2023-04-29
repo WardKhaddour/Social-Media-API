@@ -9,12 +9,15 @@ import Category from '../../models/Category';
 const getAllPosts = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const savedPosts = req.user?.savedPosts;
-    const aggregation = new APIAggregateFeatures(Post.aggregate(), req.query)
+    const aggregation = await new APIAggregateFeatures(
+      Post.aggregate(),
+      req.query,
+      Post
+    )
       .filter()
       .filterByCategory()
       .sort()
       .limitFields()
-      .paginate()
       .populateFields({
         from: User.collection.name,
         localField: 'author',
@@ -34,7 +37,8 @@ const getAllPosts = catchAsync(
           __v: 0,
         },
         asArray: true,
-      });
+      })
+      .paginate();
 
     if (savedPosts)
       aggregation.addFields('isSaved', { $in: ['$_id', savedPosts] });
@@ -45,6 +49,8 @@ const getAllPosts = catchAsync(
       success: true,
       data: {
         posts,
+        totalPages: aggregation.metaData.totalPages,
+        page: aggregation.metaData.page,
       },
     });
   }
