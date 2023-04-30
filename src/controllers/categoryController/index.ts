@@ -9,11 +9,15 @@ import { APIQueryFeatures } from '../../utils/APIFeatures';
 
 export const getAllCategories = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const features = new APIQueryFeatures(Category.find(), req.query)
+    const features = await new APIQueryFeatures(
+      Category.find(),
+      req.query,
+      Category
+    )
+      .limitFields()
       .paginate({
         limit: 3,
-      })
-      .limitFields();
+      });
     const categories = await features.query.exec();
 
     res.status(OK).json({

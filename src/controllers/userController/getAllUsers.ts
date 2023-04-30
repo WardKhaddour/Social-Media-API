@@ -6,7 +6,13 @@ import { APIQueryFeatures } from '../../utils/APIFeatures';
 
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const features = new APIQueryFeatures(User.find(), req.query)
+    const features = await new APIQueryFeatures(
+      User.find().setOptions({
+        notAuthData: true,
+      }),
+      req.query,
+      User
+    )
       .filterByCategory()
       .filter()
       .sort()
@@ -15,7 +21,11 @@ const getAllUsers = catchAsync(
     const users = await features.query;
     res.status(OK).json({
       success: true,
-      data: { users },
+      data: {
+        users,
+        totalPages: features.metaData.totalPages,
+        page: features.metaData.page,
+      },
     });
   }
 );

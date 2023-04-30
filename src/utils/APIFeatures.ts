@@ -19,9 +19,12 @@ export class APIQueryFeatures {
   query: QueryType;
 
   queryString: QueryOptions;
-  constructor(query: QueryType, queryString: QueryOptions) {
+  model?: Model<any>;
+  metaData = { totalPages: 0, page: 1 };
+  constructor(query: QueryType, queryString: QueryOptions, model?: Model<any>) {
     this.query = query;
     this.queryString = queryString;
+    this.model = model;
   }
   filter() {
     const queryObj = structuredClone(this.queryString);
@@ -67,12 +70,14 @@ export class APIQueryFeatures {
 
     return this;
   }
-  paginate(options?: { limit?: number }) {
+  async paginate(options?: { limit?: number }) {
     const page = this.queryString.page ?? 1;
     const limit = this.queryString.limit || options?.limit || 20;
     const skip = (page - 1) * limit;
 
+    const totalDocs = (await this.model?.countDocuments({})) || 1;
     this.query = this.query.skip(skip).limit(limit);
+    this.metaData = { totalPages: Math.ceil(totalDocs / limit), page };
 
     return this;
   }
@@ -193,6 +198,7 @@ export class APIAggregateFeatures {
       totalPages: Math.ceil(totalDocs / limit),
       page,
     };
+
     return this;
   }
 

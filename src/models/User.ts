@@ -180,7 +180,7 @@ UserSchema.pre(/^find/, function (next) {
 UserSchema.pre(/^find/, function (next) {
   if (this.getOptions().notAuthData) {
     this.select(
-      '-totalLoginAttempts -role -__v -emailIsConfirmed -passwordChangedAt'
+      '-totalLoginAttempts -role -__v -emailIsConfirmed -passwordChangedAt -savedPosts'
     );
   }
 
