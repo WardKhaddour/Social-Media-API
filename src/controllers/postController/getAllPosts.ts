@@ -39,12 +39,10 @@ const getAllPosts = catchAsync(
       });
     }
 
-    aggregation
-      .filter()
-      .filterByCategory()
-      .sort()
-      .limitFields()
-      .populateFields({
+    aggregation.filter().filterByCategory().sort().limitFields();
+
+    if (!req.query.category) {
+      aggregation.populateFields({
         from: Category.collection.name,
         localField: 'category',
         foreignField: '_id',
@@ -53,8 +51,9 @@ const getAllPosts = catchAsync(
           __v: 0,
         },
         asArray: true,
-      })
-      .paginate();
+      });
+    }
+    aggregation.paginate();
 
     if (savedPosts)
       aggregation.addFields('isSaved', { $in: ['$_id', savedPosts] });

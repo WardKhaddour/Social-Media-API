@@ -14,15 +14,20 @@ export const getAllCategories = catchAsync(
       req.query,
       Category
     )
+      .sort()
       .limitFields()
       .paginate({
-        limit: 3,
+        limit: +(req.query.limit || 10),
       });
     const categories = await features.query.exec();
 
     res.status(OK).json({
       success: true,
-      data: { categories },
+      data: {
+        categories,
+        totalPages: features.metaData.totalPages,
+        page: features.metaData.page,
+      },
     });
   }
 );
