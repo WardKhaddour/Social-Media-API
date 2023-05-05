@@ -1,5 +1,5 @@
 node_modules
 *.env
 build/*
-public/images/users/*
-!public/images/users/defaulr-user-photo.png
+public/
+!public/images/users/default-user-photo.png

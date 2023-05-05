@@ -33,6 +33,7 @@
     "bot": "Caught you, bot!",
     "noPermissions": "You do not have permission to perform this action",
     "notImage": "Not an image! Please upload only images",
+    "notSupportedType": "File type is not supported, Supported types are images, videos and pdf",
     "invalidEmail": "Please provide a valid E-Mail",
     "noUser": "User Not Found"
   },

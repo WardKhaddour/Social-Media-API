@@ -15,16 +15,18 @@ const getAllPosts = catchAsync(
       Post.aggregate(),
       req.query,
       Post
-    ).populateFields({
-      from: User.collection.name,
-      localField: 'author',
-      foreignField: '_id',
-      as: 'author',
-      foreignFieldFields: {
-        name: 1,
-        _id: 1,
-      },
-    });
+    )
+      .removeFields(['attachment'])
+      .populateFields({
+        from: User.collection.name,
+        localField: 'author',
+        foreignField: '_id',
+        as: 'author',
+        foreignFieldFields: {
+          name: 1,
+          _id: 1,
+        },
+      });
 
     //Filter Posts by Following
     if (req.params.byFollowing === '1') {

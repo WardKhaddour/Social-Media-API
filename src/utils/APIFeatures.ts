@@ -238,4 +238,12 @@ export class APIAggregateFeatures {
 
     return this;
   }
+  removeFields(fields: string[]) {
+    const projectObj = fields.reduce((cur, field) => {
+      return { ...cur, [field]: 0 };
+    }, {});
+    this.aggregate.project(projectObj);
+
+    return this;
+  }
 }

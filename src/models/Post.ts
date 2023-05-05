@@ -22,7 +22,16 @@ const PostSchema = new mongoose.Schema<PostDocInterface>(
         ref: 'Category',
       },
     ],
-    attachment: String,
+    attachment: {
+      type: [
+        {
+          type: { type: String, required: true },
+          filePath: { type: String, required: true },
+          fileName: { type: String, required: true },
+        },
+      ],
+      default: [],
+    },
     likesNum: {
       type: Number,
       default: 0,
@@ -41,6 +50,25 @@ const PostSchema = new mongoose.Schema<PostDocInterface>(
     toObject: { virtuals: true },
   }
 );
+
+PostSchema.virtual('attachments').get(function () {
+  const currentUrl =
+    process.env.NODE_ENV === 'production'
+      ? process.env.PROD_URL
+      : process.env.DEV_URL;
+  if (!!this.attachment?.length) {
+    const attachments = this.attachment?.map(attach => {
+      return {
+        fileName: attach.fileName,
+        type: attach.type,
+        url: `${currentUrl}/${attach.filePath}`,
+      };
+    });
+
+    return attachments;
+  }
+  return undefined;
+});
 
 PostSchema.virtual('comments', {
   ref: 'Comment',

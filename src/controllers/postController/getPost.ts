@@ -28,10 +28,12 @@ export const getPost = catchAsync(
       isSaved = !!user.savedPosts.includes(post._id);
     }
 
+    const { attachment, ...postRes } = post.toObject();
+
     res.status(OK).json({
       success: true,
       data: {
-        post: { ...post.toJSON(), isLiked, isSaved },
+        post: { postRes, isLiked, isSaved },
       },
     });
   }

@@ -16,6 +16,8 @@ import likeRouter from '../like';
 import commentRouter from '../comment';
 import aliasPostsByCategory from '../../controllers/postController/aliasPostsByCategory';
 import checkAuthenticated from '../../middleware/checkAuthenticated';
+import attachPostFiles from '../../middleware/attachPostFiles';
+import formatAndSaveAttachments from '../../middleware/formatAndSaveAttachments';
 
 const router = Router();
 
@@ -45,7 +47,12 @@ router.use('/:postId/comment', commentRouter);
 router
   .route('/')
   .get(checkAuthenticated(), getAllPosts)
-  .post(restrictAuthenticated(), addNewPost);
+  .post(
+    restrictAuthenticated(),
+    attachPostFiles,
+    formatAndSaveAttachments,
+    addNewPost
+  );
 
 router.get('/saved', restrictAuthenticated(), getSavedPosts);
 router.post('/saved/:postId', restrictAuthenticated(), toggleSavePost);
