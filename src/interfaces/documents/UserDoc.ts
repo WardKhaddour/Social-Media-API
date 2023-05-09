@@ -3,7 +3,7 @@ import { Types, Document } from 'mongoose';
 export interface UserDocInterface extends Document {
   email: string;
   password: string;
-  bio?:string;
+  bio?: string;
   role: string;
   followersNum: number;
   followingNum: number;

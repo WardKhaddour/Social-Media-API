@@ -7,3 +7,4 @@ export { default as deletePost } from './deletePost';
 export { default as aliasPostsByFollowing } from './aliasPostsByFollowing';
 export { default as toggleSavePost } from './toggleSavePost';
 export { default as getSavedPosts } from './getSavedPosts';
+export { default as deletePostAttachment } from './deletePostAttachment';

@@ -8,6 +8,7 @@ import {
   aliasPostsByFollowing,
   getSavedPosts,
   toggleSavePost,
+  deletePostAttachment,
 } from './../../controllers/postController';
 import { Router } from 'express';
 
@@ -60,6 +61,18 @@ router.post('/saved/:postId', restrictAuthenticated(), toggleSavePost);
 router
   .route('/:postId')
   .get(checkAuthenticated(), getPost)
-  .patch(restrictAuthenticated(), updatePost)
+  .patch(
+    restrictAuthenticated(),
+    attachPostFiles,
+    formatAndSaveAttachments,
+    updatePost
+  )
   .delete(restrictAuthenticated(), deletePost);
+
+//  `post/${postId}/attachment/${attachmentName}`;
+router.delete(
+  '/:postId/attachment/:attachmentName',
+  restrictAuthenticated(),
+  deletePostAttachment
+);
 export default router;

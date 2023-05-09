@@ -33,7 +33,7 @@ export const getPost = catchAsync(
     res.status(OK).json({
       success: true,
       data: {
-        post: { postRes, isLiked, isSaved },
+        post: { ...postRes, isLiked, isSaved },
       },
     });
   }

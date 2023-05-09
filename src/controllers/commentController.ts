@@ -60,7 +60,7 @@ export const updateComment = catchAsync(
       return next(new AppError(req.i18n.t('commentMsg.noComment'), NOT_FOUND));
     }
 
-    if (user?.role !== 'admin' && !comment.user.equals(user?.id)) {
+    if (!comment.user.equals(user?.id)) {
       return next(
         new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
@@ -77,6 +77,8 @@ export const updateComment = catchAsync(
 
 export const deleteComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.user?.name);
+
     const { commentId } = req.params;
     const { user } = req;
     const comment = await Comment.findById(commentId);
@@ -84,7 +86,7 @@ export const deleteComment = catchAsync(
       return next(new AppError(req.i18n.t('commentMsg.noComment'), NOT_FOUND));
     }
 
-    if (user?.role !== 'admin' && !comment.user.equals(user?.id)) {
+    if (!comment.user.equals(user?.id)) {
       return next(
         new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
