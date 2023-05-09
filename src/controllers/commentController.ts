@@ -77,13 +77,17 @@ export const updateComment = catchAsync(
 
 export const deleteComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.user?.name);
-
-    const { commentId } = req.params;
+    const { postId, commentId } = req.params;
     const { user } = req;
-    const comment = await Comment.findById(commentId);
+    const [post, comment] = await Promise.all([
+      Post.findById(postId),
+      Comment.findById(commentId),
+    ]);
     if (!comment) {
       return next(new AppError(req.i18n.t('commentMsg.noComment'), NOT_FOUND));
+    }
+    if (!post) {
+      return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
     }
 
     if (!comment.user.equals(user?.id)) {
@@ -91,7 +95,9 @@ export const deleteComment = catchAsync(
         new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
     }
-    await comment.deleteOne();
+    post.commentsNum = post.commentsNum - 1;
+    await Promise.all([comment.deleteOne(), post.save()]);
+
     res.status(DELETED).json({
       success: true,
     });
