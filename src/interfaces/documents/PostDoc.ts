@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 export interface PostDocInterface {
+  _id: Types.ObjectId;
   author: Types.ObjectId;
   title: string;
   content: string;

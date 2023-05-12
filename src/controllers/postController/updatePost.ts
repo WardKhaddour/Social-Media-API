@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import AppError from '../../utils/AppError';
 import Post from '../../models/Post';
+import savePostAttachments from '../../utils/savePostAttachments';
 
 const updatePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -19,6 +20,8 @@ const updatePost = catchAsync(
         new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
     }
+    await savePostAttachments(req, post);
+
     post.title = title || post.title;
     post.content = content || post.content;
     post.category = category || post.category;

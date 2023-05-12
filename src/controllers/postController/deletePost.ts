@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
 import AppError from '../../utils/AppError';
+import fs from 'fs/promises';
+
 const deletePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
@@ -17,6 +19,9 @@ const deletePost = catchAsync(
         new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
     }
+    post.attachment?.forEach(async attach => {
+      await fs.unlink(`public/${attach.filePath}`);
+    });
     await post.deleteOne();
     res.status(DELETED).json({
       success: true,
