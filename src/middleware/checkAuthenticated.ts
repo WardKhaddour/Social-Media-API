@@ -77,6 +77,7 @@ const checkAuthenticated = (
 
       if (currentUser.changedPasswordAfter(tokenIssuedAt)) {
         error.message = req.i18n.t('userAuthMsg.passwordChangedRecently');
+        res.locals.error = error;
         return next();
       }
 
