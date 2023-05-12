@@ -18,7 +18,7 @@ import commentRouter from '../comment';
 import aliasPostsByCategory from '../../controllers/postController/aliasPostsByCategory';
 import checkAuthenticated from '../../middleware/checkAuthenticated';
 import attachPostFiles from '../../middleware/attachPostFiles';
-import formatAndSaveAttachments from '../../middleware/formatAndSaveAttachments';
+import formatAttachments from '../../middleware/formatAttachments';
 
 const router = Router();
 
@@ -51,7 +51,7 @@ router
   .post(
     restrictAuthenticated(),
     attachPostFiles,
-    formatAndSaveAttachments,
+    formatAttachments,
     addNewPost
   );
 
@@ -64,7 +64,7 @@ router
   .patch(
     restrictAuthenticated(),
     attachPostFiles,
-    formatAndSaveAttachments,
+    formatAttachments,
     updatePost
   )
   .delete(restrictAuthenticated(), deletePost);

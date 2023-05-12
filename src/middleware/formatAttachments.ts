@@ -3,7 +3,7 @@ import jimp from 'jimp';
 import fs from 'fs/promises';
 import ffmpeg from 'fluent-ffmpeg';
 
-const formatAndSaveAttachments = async (
+const formatAttachments = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -86,4 +86,4 @@ const formatAndSaveAttachments = async (
   next();
 };
 
-export default formatAndSaveAttachments;
+export default formatAttachments;
