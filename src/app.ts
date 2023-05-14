@@ -14,9 +14,10 @@ import authRoutes from './routes/auth';
 import userRoutes from './routes/user';
 import postsRoutes from './routes/posts';
 import categoryRoutes from './routes/category';
-import { NOT_FOUND } from './constants';
+import { NOT_FOUND, OK } from './constants';
 import AppError from './utils/AppError';
 import globalErrorHandler from './controllers/errorController';
+import { ioActions, ioEvents } from './socketIo';
 
 const app: express.Application = express();
 

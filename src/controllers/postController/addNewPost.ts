@@ -6,6 +6,8 @@ import Post from '../../models/Post';
 
 import fs from 'fs/promises';
 import savePostAttachments from '../../utils/savePostAttachments';
+import { io } from '../../server';
+import { ioEvents, ioActions } from '../../socketIo';
 
 const addNewPost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -22,6 +24,14 @@ const addNewPost = catchAsync(
     await post.save();
 
     const { attachment, ...postRes } = post.toObject();
+
+    io.emit(ioEvents.POST, {
+      action: ioActions.CREATE,
+      post: {
+        ...postRes,
+        author: { name: req.user?.name, _id: req.user?._id },
+      },
+    });
 
     res.status(CREATED).json({
       success: true,

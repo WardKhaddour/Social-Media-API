@@ -9,7 +9,7 @@ process.on('uncaughtException', err => {
 
 dotenv.config();
 import app from './app';
-
+import { Server } from 'socket.io';
 const DB: string = process.env.DATABASE_LOCAL!;
 
 mongoose
@@ -25,6 +25,13 @@ const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+});
+
 process.on('unhandledRejection', (err: Error) => {
   console.log('UNHANDLED REJECTION !!!💣️💣️ Shutting Down ...');
   console.log(err.name, err.message);
@@ -33,3 +40,5 @@ process.on('unhandledRejection', (err: Error) => {
     process.exit(1);
   });
 });
+
+export { io };

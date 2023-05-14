@@ -4,6 +4,8 @@ import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
 import AppError from '../../utils/AppError';
 import fs from 'fs/promises';
+import { io } from '../../server';
+import { ioActions, ioEvents } from '../../socketIo';
 
 const deletePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -23,6 +25,10 @@ const deletePost = catchAsync(
       await fs.unlink(`public/${attach.filePath}`);
     });
     await post.deleteOne();
+    io.emit(ioEvents.POST, {
+      action: ioActions.DELETE,
+      post: post._id,
+    });
     res.status(DELETED).json({
       success: true,
       message: req.i18n.t('postMsg.postDeleted'),

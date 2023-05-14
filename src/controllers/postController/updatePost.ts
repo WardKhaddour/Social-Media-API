@@ -4,6 +4,8 @@ import catchAsync from '../../utils/catchAsync';
 import AppError from '../../utils/AppError';
 import Post from '../../models/Post';
 import savePostAttachments from '../../utils/savePostAttachments';
+import { io } from '../../server';
+import { ioActions, ioEvents } from '../../socketIo';
 
 const updatePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -26,6 +28,15 @@ const updatePost = catchAsync(
     post.content = content || post.content;
     post.category = category || post.category;
     await post.save();
+
+    io.emit(ioEvents.POST, {
+      action: ioActions.UPDATE,
+      post: {
+        ...post.toObject(),
+        author: { name: req.user?.name, _id: req.user?._id },
+      },
+    });
+
     res.status(OK).json({
       success: true,
       message: req.i18n.t('postMsg.postUpdated'),
