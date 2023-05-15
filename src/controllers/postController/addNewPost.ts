@@ -14,12 +14,14 @@ const addNewPost = catchAsync(
     const { title, content, category } = req.body;
 
     const userId = req.user?.id;
-    const post = await Post.create({
-      author: userId,
-      title,
-      content,
-      category,
-    });
+    const post = await (
+      await Post.create({
+        author: userId,
+        title,
+        content,
+        category,
+      })
+    ).populate('category');
     await savePostAttachments(req, post);
     await post.save();
 

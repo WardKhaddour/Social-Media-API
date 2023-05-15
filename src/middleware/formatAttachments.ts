@@ -17,7 +17,9 @@ const formatAttachments = async (
   for (const file of req.files as Express.Multer.File[]) {
     //Format images
     if (file.mimetype.includes('image')) {
-      file.filename = `post-postId-user-${req.user?.id}-${Date.now()}.jpeg`;
+      file.filename = `post-postId-user-${
+        req.user?.id
+      }-${Date.now()}-${Math.random().toString(36).substring(2, 15)}.jpeg`;
       const photo = (await jimp.read(file.buffer)).resize(500, 500).quality(90);
 
       const filePath = `posts/images/${file.filename}`;
@@ -33,7 +35,10 @@ const formatAttachments = async (
 
     //Format PDF
     else if (file.mimetype.includes('pdf')) {
-      file.filename = `post-postId-user-${req.user?.id}-${Date.now()}.pdf`;
+      file.filename = `post-postId-user-${
+        req.user?.id
+      }-${Date.now()}-${Math.random().toString(36).substring(2, 15)}.pdf`;
+
       const filePath = `posts/pdf/${file.filename}`;
       attachments.push({
         fileName: file.originalname,
@@ -46,7 +51,9 @@ const formatAttachments = async (
 
     // Format Videos
     else if (file.mimetype.includes('video')) {
-      file.filename = `post-postId-user-${req.user?.id}-${Date.now()}`;
+      file.filename = `post-postId-user-${
+        req.user?.id
+      }-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
       const tempFilePath = `public/posts/videos/${file.filename}`;
       await fs.writeFile(tempFilePath, file.buffer);
 
