@@ -3,6 +3,8 @@ import { BAD_REQUEST, OK } from '../../constants';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
 import AppError from '../../utils/AppError';
+import { io } from '../../server';
+import { ioActions, ioEvents } from '../../socketIo';
 
 const toggleSavePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -23,6 +25,15 @@ const toggleSavePost = catchAsync(
     }
 
     await user.save();
+    if (req.socketId) {
+      io.to(req.socketId).emit(ioEvents.SAVE_POST, {
+        action: ioActions.UPDATE,
+        data: {
+          post: post._id,
+          isSaved: user.savedPosts.includes(post._id),
+        },
+      });
+    }
 
     res.status(OK).json({
       success: true,

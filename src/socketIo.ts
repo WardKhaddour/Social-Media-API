@@ -3,6 +3,7 @@ const ioEvents = {
   LIKE: 'like',
   COMMENT: 'comment',
   FOLLOW: 'follow',
+  SAVE_POST: 'savePost',
 };
 
 const ioActions = {

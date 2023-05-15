@@ -69,7 +69,13 @@ app.use(
 
 // Serving static files
 app.use(express.static('public'));
+//Add Socket Id to request
 
+app.use('/api/v1', (req, res, next) => {
+  const socketId = req.headers.socketid;
+  req.socketId = socketId;
+  next();
+});
 // Language Headers
 app.use(i18nMiddleware.handle(i18next));
 app.use('/api/v1', (req, res, next) => {

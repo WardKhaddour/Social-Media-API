@@ -34,12 +34,17 @@ export const toggleLike = catchAsync(
     }
     await post?.save({ validateBeforeSave: false });
 
+    if (req.socketId) {
+      io.to(req.socketId).emit(ioEvents.LIKE, {
+        action: ioActions.UPDATE,
+        data: { post: post._id, isLiked: !prevLike, likesNum: post.likesNum },
+      });
+    }
     io.emit(ioEvents.LIKE, {
       action: ioActions.UPDATE,
       data: {
         post: post._id,
         likesNum: post.likesNum,
-        isLiked: !prevLike,
       },
     });
 

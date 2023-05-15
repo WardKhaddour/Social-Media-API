@@ -2,6 +2,7 @@ import { UserDocInterface } from '../../interfaces/documents/UserDoc';
 declare global {
   namespace Express {
     interface Request {
+      socketId?: string;
       user?: UserDocInterface;
       attachments?: {
         type: string;
