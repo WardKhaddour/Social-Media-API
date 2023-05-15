@@ -4,6 +4,8 @@ import catchAsync from '../utils/catchAsync';
 import Like from '../models/Like';
 import Post from '../models/Post';
 import AppError from '../utils/AppError';
+import { io } from '../server';
+import { ioActions, ioEvents } from '../socketIo';
 
 export const toggleLike = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -31,6 +33,15 @@ export const toggleLike = catchAsync(
       post.likesNum++;
     }
     await post?.save({ validateBeforeSave: false });
+
+    io.emit(ioEvents.LIKE, {
+      action: ioActions.UPDATE,
+      data: {
+        post: post._id,
+        likesNum: post.likesNum,
+        isLiked: !prevLike,
+      },
+    });
 
     res.status(200).json({
       success: true,

@@ -4,6 +4,8 @@ import catchAsync from '../utils/catchAsync';
 import Comment from '../models/Comment';
 import Post from '../models/Post';
 import AppError from '../utils/AppError';
+import { io } from '../server';
+import { ioActions, ioEvents } from '../socketIo';
 
 export const addNewComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -14,13 +16,29 @@ export const addNewComment = catchAsync(
       return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
     }
     const user = req.user;
-    await Comment.create({
+    const comment = await Comment.create({
       post: postId,
       user: user?.id,
       content,
     });
     post.commentsNum++;
+
     await post?.save({ validateBeforeSave: false });
+    io.emit(ioEvents.COMMENT, {
+      action: ioActions.CREATE,
+      data: {
+        comment: {
+          ...comment.toObject(),
+          user: {
+            name: req.user?.name,
+            _id: req.user?._id,
+            photo: req.user?.photo,
+          },
+        },
+        post: post._id,
+        commentsNum: post.commentsNum,
+      },
+    });
 
     res.status(200).json({
       success: true,
@@ -52,7 +70,7 @@ export const getCommentsOnPost = catchAsync(
 
 export const updateComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { title, content } = req.body;
+    const { content } = req.body;
     const { commentId } = req.params;
     const { user } = req;
     const comment = await Comment.findById(commentId);
@@ -67,6 +85,20 @@ export const updateComment = catchAsync(
     }
     comment.content = content || comment.content;
     await comment.save();
+    io.emit(ioEvents.COMMENT, {
+      action: ioActions.UPDATE,
+      data: {
+        post: comment.post,
+        comment: {
+          ...comment.toObject(),
+          user: {
+            name: req.user?.name,
+            _id: req.user?._id,
+            photo: req.user?.photo,
+          },
+        },
+      },
+    });
     res.status(OK).json({
       success: true,
       message: req.i18n.t('commentMsg.commentUpdated'),
@@ -97,7 +129,14 @@ export const deleteComment = catchAsync(
     }
     post.commentsNum = post.commentsNum - 1;
     await Promise.all([comment.deleteOne(), post.save()]);
-
+    io.emit(ioEvents.COMMENT, {
+      action: ioActions.DELETE,
+      data: {
+        comment: comment._id,
+        post: comment.post._id,
+        commentsNum: post.commentsNum,
+      },
+    });
     res.status(DELETED).json({
       success: true,
     });
