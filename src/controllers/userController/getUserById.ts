@@ -1,13 +1,18 @@
-import { NOT_FOUND, OK } from './../../constants';
+import { NOT_FOUND, OK, SERVER_ERROR } from './../../constants';
 import { Request, Response, NextFunction } from 'express';
 
 import User from '../../models/User';
 import AppError from '../../utils/AppError';
 import Follow from '../../models/Follow';
+import { ObjectId } from 'mongodb';
 
 const getUserById = async (req: Request, res: Response, next: NextFunction) => {
   const { userId } = req.params;
-  const currentUser = req.user;
+  const currentUser = req.user;   if (!ObjectId.isValid(userId)) {
+    return next(
+      new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+    );
+  }
   const query = User.findById(userId).populate({
     path: 'posts',
     populate: {

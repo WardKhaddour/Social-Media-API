@@ -1,4 +1,5 @@
-import { DELETED, FORBIDDEN, NOT_FOUND, OK } from './../constants';
+import { ObjectId } from 'mongodb';
+import { DELETED, FORBIDDEN, NOT_FOUND, OK, SERVER_ERROR } from './../constants';
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../utils/catchAsync';
 import Comment from '../models/Comment';
@@ -11,6 +12,9 @@ export const addNewComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
     const { content } = req.body;
+    if (!ObjectId.isValid(postId)) {
+      return next(new AppError(req.i18n.t('userAuthMsg.serverError'),SERVER_ERROR))
+    }
     const post = await Post.findById(postId);
     if (!post) {
       return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
@@ -48,7 +52,11 @@ export const addNewComment = catchAsync(
 
 export const getCommentsOnPost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { postId } = req.params;
+    const { postId } = req.params; if (!ObjectId.isValid(postId)) {
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
+    }
     const post = await Post.findById(postId);
     if (!post) {
       return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));
@@ -72,7 +80,11 @@ export const updateComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { content } = req.body;
     const { commentId } = req.params;
-    const { user } = req;
+    const { user } = req; if (!ObjectId.isValid(commentId)) {
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
+    }
     const comment = await Comment.findById(commentId);
     if (!comment) {
       return next(new AppError(req.i18n.t('commentMsg.noComment'), NOT_FOUND));
@@ -111,6 +123,17 @@ export const deleteComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId, commentId } = req.params;
     const { user } = req;
+
+     if (!ObjectId.isValid(commentId) || !ObjectId.isValid(postId)) {
+       return next(
+         new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+       );
+     }
+ if (!ObjectId.isValid(commentId) || !ObjectId.isValid(postId)) {
+   return next(
+     new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+   );
+ }
     const [post, comment] = await Promise.all([
       Post.findById(postId),
       Comment.findById(commentId),

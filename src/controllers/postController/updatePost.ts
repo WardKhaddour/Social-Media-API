@@ -1,4 +1,4 @@
-import { NOT_FOUND, OK, FORBIDDEN } from './../../constants';
+import { NOT_FOUND, OK, FORBIDDEN, SERVER_ERROR } from './../../constants';
 import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import AppError from '../../utils/AppError';
@@ -6,12 +6,18 @@ import Post from '../../models/Post';
 import savePostAttachments from '../../utils/savePostAttachments';
 import { io } from '../../server';
 import { ioActions, ioEvents } from '../../socketIo';
+import { ObjectId } from 'mongodb';
 
 const updatePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { title, content, category } = req.body;
     const { postId } = req.params;
     const { user } = req;
+    if (!ObjectId.isValid(postId)) {
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
+    }
     const post = await Post.findById(postId);
     if (!post) {
       return next(new AppError(req.i18n.t('postMsg.noPost'), NOT_FOUND));

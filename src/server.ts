@@ -35,6 +35,7 @@ const io = new Server(server, {
 process.on('unhandledRejection', (err: Error) => {
   console.log('UNHANDLED REJECTION !!!💣️💣️ Shutting Down ...');
   console.log(err.name, err.message);
+  console.log(err);
 
   server.close(() => {
     process.exit(1);

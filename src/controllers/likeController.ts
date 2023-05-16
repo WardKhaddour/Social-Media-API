@@ -1,4 +1,4 @@
-import { NOT_FOUND } from './../constants';
+import { NOT_FOUND, SERVER_ERROR } from './../constants';
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../utils/catchAsync';
 import Like from '../models/Like';
@@ -6,10 +6,16 @@ import Post from '../models/Post';
 import AppError from '../utils/AppError';
 import { io } from '../server';
 import { ioActions, ioEvents } from '../socketIo';
+import { ObjectId } from 'mongodb';
 
 export const toggleLike = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { postId } = req.params;
+    if (!ObjectId.isValid(postId)) {
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
+    }
     const post = await Post.findById(postId);
     if (!post) {
       return next(new AppError('', NOT_FOUND));

@@ -1,10 +1,11 @@
-import { NOT_FOUND, BAD_REQUEST } from './../../constants';
+import { NOT_FOUND, BAD_REQUEST, SERVER_ERROR } from './../../constants';
 import { Request, Response, NextFunction, query } from 'express';
 
 import User from '../../models/User';
 import Follow from '../../models/Follow';
 import { OK } from '../../constants';
 import AppError from '../../utils/AppError';
+import { ObjectId } from 'mongodb';
 
 const toggleFollowUser = async (
   req: Request,
@@ -13,7 +14,11 @@ const toggleFollowUser = async (
 ) => {
   const user = req.user!;
   const { userId: userToFollowId } = req.params;
-
+  if (!ObjectId.isValid(userToFollowId)) {
+    return next(
+      new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+    );
+  }
   if (user._id.equals(userToFollowId)) {
     return next(
       new AppError(req.i18n.t('followMsg.noFollowYourself'), BAD_REQUEST)
