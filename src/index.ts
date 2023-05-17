@@ -28,7 +28,10 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin:'*',
+    origin: [
+      'https://topic-nexus.netlify.app',
+      'https://topic-nexus.vercel.app/',
+    ],
     methods: ['GET', 'POST'],
   },
 });
