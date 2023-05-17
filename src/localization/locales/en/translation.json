@@ -1,64 +1,64 @@
 {
-  "userAuthMsg": {
-    "incorrectPassword": "Incorrect password. Please try again",
-    "serverErrorOccurred": "An Error occurred. Please try again later",
-    "confirmNewEmail": "Please confirm your new Email",
-    "userUpdated": "User Updated Successfully",
-    "gotUserSuccess": "Got user successfully",
-    "welcome": "Welcome",
-    "serverError": "Something went wrong",
-    "jwtExpired": "Your Token has expired!. Please login again",
-    "invalidToken": "Invalid Token. Please login again",
-    "invalidData": "Invalid Input Data",
-    "duplicateField": "Duplicate field value",
-    "useOtherValue": "Please use another value",
-    "invalid": "Invalid",
-    "currentPasswordWrong": "Your current password is wrong",
-    "changedPassword": "Password changed successfully",
-    "usedEmail": "E-Mail already in use",
-    "createdAccountSuccess": "Account creates successfully",
-    "invalidExpiredToken": "Token is invalid or has expired",
-    "loggedOutSuccess": "Logged out successfully",
-    "loggedIn": "Logged In",
-    "failedLogin": "Invalid credentials, You have only {{remaining}} remaining login attempts",
-    "timeToLogin": "Please wait {{remainingTime}} minutes then retry",
-    "invalidCredentials": "Invalid credentials",
-    "noUserEmail": "There is no user with this email address",
-    "tokenSent": "Token sent to your email",
-    "passwordChangedRecently": "User recently changed password! Please login again.",
-    "deletedPhoto": "Photo Deleted Successfully",
-    "deletedUser": "The user is no longer exists",
-    "notLoggedIn": "You are not logged in!! Please login first",
-    "unconfirmedEmail": "Please confirm your email first",
-    "bot": "Caught you, bot!",
-    "noPermissions": "You do not have permission to perform this action",
-    "notImage": "Not an image! Please upload only images",
-    "notSupportedType": "File type is not supported, Supported types are images, videos and pdf",
-    "invalidEmail": "Please provide a valid E-Mail",
-    "noUser": "User Not Found"
-  },
-  "categoryMsg": {
-    "noCategory": "No Category Found",
-    "categoryExists": "Category already exists",
-    "categoryAdded": "Category Added Successfully",
-    "categoryUpdated": "Category Updated Successfully",
-    "categoryDeleted": "Category Deleted Successfully"
-  },
-  "postMsg": {
-    "noPost": "No Post Found",
-    "postAdded": "Post Added Successfully",
-    "postUpdated": "Post Updated Successfully",
-    "postDeleted": "Post Deleted Successfully"
-  },
-  "commentMsg": {
-    "noComment": "No Comment Found",
-    "commentAdded": "Comment Added Successfully",
-    "commentUpdated": "Comment Updated Successfully",
-    "commentDeleted": "Comment Deleted Successfully"
-  },
-  "followMsg": {
-    "noFollowYourself": "You Cannot Follow Your Self",
-    "followedUserSuccess": "Followed {{name}} successfully",
-    "unfollowedUserSuccess": "Unfollowed {{name}} successfully"
-  }
+    "userAuthMsg": {
+        "incorrectPassword": "Incorrect password. Please try again",
+        "serverErrorOccurred": "An Error occurred. Please try again later",
+        "confirmNewEmail": "Please confirm your new Email",
+        "userUpdated": "User Updated Successfully",
+        "gotUserSuccess": "Got user successfully",
+        "welcome": "Welcome",
+        "serverError": "Something went wrong",
+        "jwtExpired": "Your Token has expired!. Please login again",
+        "invalidToken": "Invalid Token. Please login again",
+        "invalidData": "Invalid Input Data",
+        "duplicateField": "Duplicate field value",
+        "useOtherValue": "Please use another value",
+        "invalid": "Invalid",
+        "currentPasswordWrong": "Your current password is wrong",
+        "changedPassword": "Password changed successfully",
+        "usedEmail": "E-Mail already in use",
+        "createdAccountSuccess": "Account creates successfully",
+        "invalidExpiredToken": "Token is invalid or has expired",
+        "loggedOutSuccess": "Logged out successfully",
+        "loggedIn": "Logged In",
+        "failedLogin": "Invalid credentials, You have only {{remaining}} remaining login attempts",
+        "timeToLogin": "Please wait {{remainingTime}} minutes then retry",
+        "invalidCredentials": "Invalid credentials",
+        "noUserEmail": "There is no user with this email address",
+        "tokenSent": "Token sent to your email",
+        "passwordChangedRecently": "User recently changed password! Please login again.",
+        "deletedPhoto": "Photo Deleted Successfully",
+        "deletedUser": "The user is no longer exists",
+        "notLoggedIn": "You are not logged in!! Please login first",
+        "unconfirmedEmail": "Please confirm your email first",
+        "bot": "Caught you, bot!",
+        "noPermissions": "You do not have permission to perform this action",
+        "notImage": "Not an image! Please upload only images",
+        "notSupportedType": "File type is not supported, Supported types are images, videos and pdf",
+        "invalidEmail": "Please provide a valid E-Mail",
+        "noUser": "User Not Found"
+    },
+    "categoryMsg": {
+        "noCategory": "No Category Found",
+        "categoryExists": "Category already exists",
+        "categoryAdded": "Category Added Successfully",
+        "categoryUpdated": "Category Updated Successfully",
+        "categoryDeleted": "Category Deleted Successfully"
+    },
+    "postMsg": {
+        "noPost": "No Post Found",
+        "postAdded": "Post Added Successfully",
+        "postUpdated": "Post Updated Successfully",
+        "postDeleted": "Post Deleted Successfully"
+    },
+    "commentMsg": {
+        "noComment": "No Comment Found",
+        "commentAdded": "Comment Added Successfully",
+        "commentUpdated": "Comment Updated Successfully",
+        "commentDeleted": "Comment Deleted Successfully"
+    },
+    "followMsg": {
+        "noFollowYourself": "You Cannot Follow Your Self",
+        "followedUserSuccess": "Followed {{name}} successfully",
+        "unfollowedUserSuccess": "Unfollowed {{name}} successfully"
+    }
 }
