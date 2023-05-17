@@ -2,7 +2,7 @@ import i18next from 'i18next';
 import translateEn from './locales/en/translation.json';
 import translateAr from './locales/ar/translation.json';
 
-export const defaultNS = 'translateEn';
+export const defaultNS = 'translation';
 export const resources = {
   en: { translation: translateEn },
   ar: { translation: translateAr },
