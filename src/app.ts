@@ -17,7 +17,7 @@ import categoryRoutes from './routes/category';
 import { NOT_FOUND, OK } from './constants';
 import AppError from './utils/AppError';
 import globalErrorHandler from './controllers/errorController';
-import { ioActions, ioEvents } from './socketIo';
+import compression from 'compression';
 
 const app: express.Application = express();
 
@@ -66,6 +66,9 @@ app.use(
     whitelist: [],
   })
 );
+
+// Compress text responses
+app.use(compression());
 
 // Serving static files
 app.use(express.static('public'));
