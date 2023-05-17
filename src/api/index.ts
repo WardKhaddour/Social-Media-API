@@ -33,7 +33,10 @@ const limiter = rateLimit({
 // Allow cors
 app.use(
   cors({
-    origin: '*',
+    origin: [
+      'https://topic-nexus.netlify.app',
+      'https://topic-nexus.vercel.app/',
+    ],
     credentials: true,
   })
 );
