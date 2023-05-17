@@ -14,17 +14,21 @@ class Email {
   }
 
   newTransport() {
-    // if (process.env.NODE_ENV === 'production') {
-    //   return createTransport({
-    //     host: process.env.SMTP_HOST!,
-    //     port: +process.env.SMTP_PORT!,
-    //     secure: true,
-    //     auth: {
-    //       user: process.env.SMTP_USERNAME!,
-    //       pass: process.env.SMTP_PASSWORD!,
-    //     },
-    //   });
-    // }
+    if (process.env.NODE_ENV === 'production') {
+      console.log('hello');
+
+      return createTransport(
+        new SMTPTransport({
+          host: process.env.SMTP_HOST!,
+          port: +process.env.SMTP_PORT!,
+
+          auth: {
+            user: process.env.SMTP_USERNAME!,
+            pass: process.env.SMTP_PASSWORD!,
+          },
+        })
+      );
+    }
 
     return createTransport(
       new SMTPTransport({
@@ -52,8 +56,11 @@ class Email {
       html,
       text: htmlToText(html),
     };
-
-    await this.newTransport().sendMail(mailOptions);
+    try {
+      await this.newTransport().sendMail(mailOptions);
+    } catch (err) {
+      throw err;
+    }
   }
 
   async sendPasswordReset() {

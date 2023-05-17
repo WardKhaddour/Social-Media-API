@@ -16,6 +16,7 @@ declare global {
       EMAIL_PORT: number;
       EMAIL_FROM: string;
       EMAIL_PROD_API_KEY: string;
+      SPARK_POST_API_KEY: string;
       SMTP_HOST: string;
       SMTP_PORT: number;
       SMTP_USERNAME: string;

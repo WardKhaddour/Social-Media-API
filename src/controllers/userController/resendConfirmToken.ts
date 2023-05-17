@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { NOT_FOUND, OK } from '../../constants';
+import { NOT_FOUND, OK, SERVER_ERROR } from '../../constants';
 import User from '../../models/User';
 import AppError from '../../utils/AppError';
 import catchAsync from '../../utils/catchAsync';
@@ -13,7 +13,12 @@ const resendConfirmToken = catchAsync(
         new AppError(req.i18n.t('userAuthMsg.noUserEmail'), NOT_FOUND)
       );
     }
-    await sendEmailConfirmationLink(user, req, next);
+    try {
+      
+      await sendEmailConfirmationLink(user, req, next);
+    } catch (err) {
+      return next(new AppError(req.i18n.t('userAuthMsg.serverError'),SERVER_ERROR))
+    }
 
     res.status(OK).json({
       success: true,
