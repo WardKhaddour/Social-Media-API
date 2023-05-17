@@ -10,7 +10,7 @@ process.on('uncaughtException', err => {
 dotenv.config();
 import app from './app';
 import { Server } from 'socket.io';
-const DB: string = process.env.DATABASE_LOCAL!;
+const DB: string = process.env.DATABASE_HOST!;
 
 mongoose
   .connect(DB)
