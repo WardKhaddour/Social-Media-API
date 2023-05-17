@@ -6,7 +6,7 @@ import Post from '../../models/Post';
 
 import fs from 'fs/promises';
 import savePostAttachments from '../../utils/savePostAttachments';
-import { io } from '../../server';
+import { io } from '../..';
 import { ioEvents, ioActions } from '../../socketIo';
 
 const addNewPost = catchAsync(

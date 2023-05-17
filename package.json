@@ -2,14 +2,14 @@
   "name": "training",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "./build/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./build/server.js",
-    "dev": "nodemon ./src/server.ts",
-    "start:prod": "NODE_ENV=production nodemon ./src/server.ts",
+    "start": "node ./build/index.js",
+    "dev": "nodemon ./src/index.ts",
+    "start:prod": "NODE_ENV=production nodemon ./src/index.ts",
     "build": "tsc",
-    "debug": "ndb ./src/server.ts"
+    "debug": "ndb ./src/index.ts"
   },
   "author": "",
   "license": "ISC",

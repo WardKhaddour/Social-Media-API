@@ -4,7 +4,7 @@ import catchAsync from '../utils/catchAsync';
 import Like from '../models/Like';
 import Post from '../models/Post';
 import AppError from '../utils/AppError';
-import { io } from '../server';
+import { io } from '..';
 import { ioActions, ioEvents } from '../socketIo';
 import { ObjectId } from 'mongodb';
 

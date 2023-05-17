@@ -1,11 +1,17 @@
 import { ObjectId } from 'mongodb';
-import { DELETED, FORBIDDEN, NOT_FOUND, OK, SERVER_ERROR } from './../constants';
+import {
+  DELETED,
+  FORBIDDEN,
+  NOT_FOUND,
+  OK,
+  SERVER_ERROR,
+} from './../constants';
 import { NextFunction, Request, Response } from 'express';
 import catchAsync from '../utils/catchAsync';
 import Comment from '../models/Comment';
 import Post from '../models/Post';
 import AppError from '../utils/AppError';
-import { io } from '../server';
+import { io } from '..';
 import { ioActions, ioEvents } from '../socketIo';
 
 export const addNewComment = catchAsync(
@@ -13,7 +19,9 @@ export const addNewComment = catchAsync(
     const { postId } = req.params;
     const { content } = req.body;
     if (!ObjectId.isValid(postId)) {
-      return next(new AppError(req.i18n.t('userAuthMsg.serverError'),SERVER_ERROR))
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
     }
     const post = await Post.findById(postId);
     if (!post) {
@@ -52,7 +60,8 @@ export const addNewComment = catchAsync(
 
 export const getCommentsOnPost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const { postId } = req.params; if (!ObjectId.isValid(postId)) {
+    const { postId } = req.params;
+    if (!ObjectId.isValid(postId)) {
       return next(
         new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
       );
@@ -80,7 +89,8 @@ export const updateComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { content } = req.body;
     const { commentId } = req.params;
-    const { user } = req; if (!ObjectId.isValid(commentId)) {
+    const { user } = req;
+    if (!ObjectId.isValid(commentId)) {
       return next(
         new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
       );
@@ -124,16 +134,16 @@ export const deleteComment = catchAsync(
     const { postId, commentId } = req.params;
     const { user } = req;
 
-     if (!ObjectId.isValid(commentId) || !ObjectId.isValid(postId)) {
-       return next(
-         new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
-       );
-     }
- if (!ObjectId.isValid(commentId) || !ObjectId.isValid(postId)) {
-   return next(
-     new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
-   );
- }
+    if (!ObjectId.isValid(commentId) || !ObjectId.isValid(postId)) {
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
+    }
+    if (!ObjectId.isValid(commentId) || !ObjectId.isValid(postId)) {
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
+    }
     const [post, comment] = await Promise.all([
       Post.findById(postId),
       Comment.findById(commentId),

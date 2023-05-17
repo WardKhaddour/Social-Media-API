@@ -4,7 +4,7 @@ import catchAsync from '../../utils/catchAsync';
 import AppError from '../../utils/AppError';
 import Post from '../../models/Post';
 import savePostAttachments from '../../utils/savePostAttachments';
-import { io } from '../../server';
+import { io } from '../..';
 import { ioActions, ioEvents } from '../../socketIo';
 import { ObjectId } from 'mongodb';
 

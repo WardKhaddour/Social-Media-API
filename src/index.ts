@@ -8,7 +8,8 @@ process.on('uncaughtException', err => {
 });
 
 dotenv.config();
-import app from './app';
+import app from './api';
+
 import { Server } from 'socket.io';
 const DB: string = process.env.DATABASE_HOST!;
 

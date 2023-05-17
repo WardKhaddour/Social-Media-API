@@ -3,7 +3,7 @@ import { BAD_REQUEST, OK, SERVER_ERROR } from '../../constants';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
 import AppError from '../../utils/AppError';
-import { io } from '../../server';
+import { io } from '../..';
 import { ioActions, ioEvents } from '../../socketIo';
 import { ObjectId } from 'mongodb';
 
@@ -11,11 +11,11 @@ const toggleSavePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user!;
     const { postId } = req.params;
-   if (!ObjectId.isValid(postId)) {
-     return next(
-       new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
-     );
-   }
+    if (!ObjectId.isValid(postId)) {
+      return next(
+        new AppError(req.i18n.t('userAuthMsg.serverError'), SERVER_ERROR)
+      );
+    }
     const post = await Post.findById(postId);
     if (!post) {
       return next(new AppError(req.i18n.t('postMsg.noPost'), BAD_REQUEST));
