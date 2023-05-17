@@ -28,7 +28,10 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin:
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://topic-nexus-8q1pq34jt-wardkhaddour.vercel.app/',
     methods: ['GET', 'POST'],
   },
 });
