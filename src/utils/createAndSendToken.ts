@@ -1,6 +1,6 @@
 import { UserDocInterface } from '../interfaces/documents/UserDoc';
 import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, CookieOptions } from 'express';
 
 const signToken = (userId: string): string => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET!, {
@@ -19,10 +19,11 @@ const createAndSendToken = (
   const token = signToken(user._id);
   const cookieExpiresIn = +process.env.JWT_COOKIE_EXPIRES_IN!;
 
-  const cookieOptions = {
+  const cookieOptions: CookieOptions = {
     expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    secure: false,
     httpOnly: true,
+    sameSite: 'none',
+    secure: process.env.NODE_ENV === 'production',
   };
 
   if (process.env.NODE_ENV === 'production') {

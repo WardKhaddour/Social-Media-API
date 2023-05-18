@@ -35,7 +35,7 @@ app.use(
   cors({
     origin: [
       'https://topic-nexus.netlify.app',
-      'https://topic-nexus.vercel.app/',
+      'https://topic-nexus.vercel.app',
     ],
     credentials: true,
   })
