@@ -20,7 +20,7 @@ const createAndSendToken = (
   const cookieExpiresIn = +process.env.JWT_COOKIE_EXPIRES_IN!;
 
   const cookieOptions = {
-    expires: new Date(Date.now() + cookieExpiresIn * 24 * 60 * 60 * 1000),
+    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     secure: false,
     httpOnly: true,
   };
