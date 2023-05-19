@@ -59,6 +59,7 @@
   "followMsg": {
     "noFollowYourself": "لا يمكنك متابعة نفسك !",
     "followedUserSuccess": "تم متابعة {{name}} بنجاح",
-    "unfollowedUserSuccess": "تم الغاء متابعة {{name}} بنجاح"
+    "unfollowedUserSuccess": "تم الغاء متابعة {{name}} بنجاح",
+    "noFollowing": "أنت لا تتابع أي مستخدم !!"
   }
 }
