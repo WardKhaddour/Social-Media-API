@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jimp from 'jimp';
 import fs from 'fs/promises';
 import ffmpeg from 'fluent-ffmpeg';
+import { deleteFile } from '../utils/file';
 
 const formatAttachments = async (
   req: Request,
@@ -66,11 +67,11 @@ const formatAttachments = async (
             .format('mp4')
             .output(filePath);
           processedVideo.on('end', async () => {
-            await fs.unlink(tempFilePath);
+            await deleteFile(tempFilePath);
             resolve();
           });
           processedVideo.on('error', async err => {
-            await fs.unlink(tempFilePath);
+            await deleteFile(tempFilePath);
             reject(err);
           });
 

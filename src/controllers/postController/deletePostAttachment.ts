@@ -6,6 +6,7 @@ import Post from '../../models/Post';
 import AppError from '../../utils/AppError';
 import fs from 'fs/promises';
 import { ObjectId } from 'mongodb';
+import { deleteFile } from '../../utils/file';
 
 const deletePostAttachment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -38,7 +39,7 @@ const deletePostAttachment = catchAsync(
     });
 
     if (attachmentPath) {
-      await Promise.all([post.save(), fs.unlink(`public/${attachmentPath}`)]);
+      await Promise.all([post.save(), deleteFile(`public/${attachmentPath}`)]);
     }
 
     res.status(DELETED).json({

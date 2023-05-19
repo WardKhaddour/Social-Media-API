@@ -7,6 +7,7 @@ import fs from 'fs/promises';
 import { io } from '../..';
 import { ioActions, ioEvents } from '../../socketIo';
 import { ObjectId } from 'mongodb';
+import { deleteFile } from '../../utils/file';
 
 const deletePost = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -28,7 +29,7 @@ const deletePost = catchAsync(
       );
     }
     post.attachment?.forEach(async attach => {
-      await fs.unlink(`public/${attach.filePath}`);
+      await deleteFile(`public/${attach.filePath}`);
     });
     await post.deleteOne();
     io.emit(ioEvents.POST, {
