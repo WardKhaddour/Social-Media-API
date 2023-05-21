@@ -8,7 +8,7 @@ import getUserFollowing from '../../controllers/userController/getUserFollowing'
 const router = Router();
 
 router.patch('/follow/:userId', restrictAuthenticated(), toggleFollowUser);
-router.get('/:userId/followers', restrictAuthenticated(), getUserFollowers);
-router.get('/:userId/following', restrictAuthenticated(), getUserFollowing);
+router.get('/:userId/followers', checkAuthenticated(), getUserFollowers);
+router.get('/:userId/following', checkAuthenticated(), getUserFollowing);
 
 export default router;
