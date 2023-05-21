@@ -6,11 +6,10 @@ import logout from './logout';
 import updateMe from './updateMe';
 import updatePassword from './updatePassword';
 import getUserById from './getUserById';
-import toggleFollow from './toggleFollow';
 import checkFollowing from './checkFollowing';
 import getAllUsers from './getAllUsers';
 import deleteMyPhoto from './deleteMyPhoto';
-
+import follow from './follow';
 const router = Router();
 
 router.use(getAllUsers);
@@ -21,7 +20,7 @@ router.use(logout);
 router.use(updateMe);
 router.use(updatePassword);
 router.use(getUserById);
-router.use(toggleFollow);
 router.use(checkFollowing);
 router.use(deleteMyPhoto);
+router.use(follow);
 export default router;

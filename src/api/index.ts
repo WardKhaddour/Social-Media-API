@@ -25,7 +25,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 const limiter = rateLimit({
-  max: 100,
+  max: 1000,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour',
 });
@@ -36,6 +36,7 @@ app.use(
     origin: [
       'https://topic-nexus.netlify.app',
       'https://topic-nexus.vercel.app',
+      'http://localhost:3000',
     ],
     credentials: true,
   })

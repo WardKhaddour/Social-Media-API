@@ -11,7 +11,10 @@ dotenv.config();
 import app from './api';
 
 import { Server } from 'socket.io';
-const DB: string = process.env.DATABASE_HOST!;
+const DB: string =
+  process.env.NODE_ENV === 'production'
+    ? process.env.DATABASE_HOST!
+    : process.env.DATABASE_LOCAL;
 
 mongoose
   .connect(DB)
@@ -31,6 +34,7 @@ const io = new Server(server, {
     origin: [
       'https://topic-nexus.vercel.app',
       'https://topic-nexus.netlify.app',
+      'http://localhost:3000',
     ],
     methods: ['GET', 'POST'],
   },
