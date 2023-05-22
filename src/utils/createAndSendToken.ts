@@ -20,14 +20,14 @@ const createAndSendToken = (
   const cookieExpiresIn = +process.env.JWT_COOKIE_EXPIRES_IN!;
 
   const cookieOptions: CookieOptions = {
-    expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    expires: new Date(Date.now() + cookieExpiresIn * 24 * 60 * 60 * 1000),
     httpOnly: true,
     sameSite: 'none',
-    secure: process.env.NODE_ENV === 'production',
   };
 
   if (process.env.NODE_ENV === 'production') {
     cookieOptions.secure = true;
+    cookieOptions.domain = '.onrender.com';
   }
 
   res.cookie('jwt', token, cookieOptions);
