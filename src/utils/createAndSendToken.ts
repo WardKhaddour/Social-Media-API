@@ -17,20 +17,20 @@ const createAndSendToken = (
   res: Response
 ) => {
   const token = signToken(user._id);
-  const cookieExpiresIn = +process.env.JWT_COOKIE_EXPIRES_IN!;
+  // const cookieExpiresIn = +process.env.JWT_COOKIE_EXPIRES_IN!;
 
-  const cookieOptions: CookieOptions = {
-    expires: new Date(Date.now() + cookieExpiresIn * 24 * 60 * 60 * 1000),
-    httpOnly: true,
-    sameSite: 'none',
-  };
+  // const cookieOptions: CookieOptions = {
+  //   expires: new Date(Date.now() + cookieExpiresIn * 24 * 60 * 60 * 1000),
+  //   httpOnly: true,
+  //   sameSite: 'none',
+  //   domain: '',
+  // };
 
-  if (process.env.NODE_ENV === 'production') {
-    cookieOptions.secure = true;
-    cookieOptions.domain = '.onrender.com';
-  }
+  // if (process.env.NODE_ENV === 'production') {
+  //   cookieOptions.secure = true;
+  // }
 
-  res.cookie('jwt', token, cookieOptions);
+  // res.cookie('jwt', token, cookieOptions);
   res.status(statusCode).json({
     success: true,
     message,
@@ -41,6 +41,7 @@ const createAndSendToken = (
         photo: user.photo,
         emailIsConfirmed: user.emailIsConfirmed,
       },
+      token,
     },
   });
 };

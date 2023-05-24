@@ -37,53 +37,60 @@ const checkAuthenticated = (
         statusCode: UNAUTHORIZED,
       };
       //1) Getting the token and check if exist
-      const token = req.cookies.jwt;
+
+      if (!req.headers.authorization) {
+        res.locals.error = error;
+        return next();
+      }
+
+      const token = req.headers.authorization.split('Bearer')[1].trim();
 
       if (!token) {
-        error.message = req.i18n.t('userAuthMsg.notLoggedIn');
         res.locals.error = error;
         return next();
       }
 
       //2) Verification token
-      const decodedToken = await JWTVerify(
-        token,
-        process.env.JWT_SECRET!
-      ).catch(err => {
-        error.message = err.message;
-        res.locals.error = error;
-        return next();
-      });
+      try {
+        const decodedToken = await JWTVerify(token, process.env.JWT_SECRET!);
 
-      const userId =
-        typeof decodedToken === 'string' ? decodedToken : decodedToken?.userId;
-      //3) Check if user still exists
-      const currentUser = options.withPassword
-        ? await User.findById(userId).select('+password')
-        : await User.findById(userId);
+        const userId =
+          typeof decodedToken === 'string'
+            ? decodedToken
+            : decodedToken?.userId;
+        //3) Check if user still exists
+        const currentUser = options.withPassword
+          ? await User.findById(userId).select('+password')
+          : await User.findById(userId);
 
-      if (!currentUser) {
-        error.message = req.i18n.t('userAuthMsg.deletedUser');
+        if (!currentUser) {
+          error.message = req.i18n.t('userAuthMsg.deletedUser');
+          res.locals.error = error;
+          return next();
+        }
+
+        //4) Check if user changed password after the token was issued
+
+        const tokenIssuedAt =
+          typeof decodedToken === 'string'
+            ? +decodedToken
+            : decodedToken?.iat || 0;
+
+        if (currentUser.changedPasswordAfter(tokenIssuedAt)) {
+          error.message = req.i18n.t('userAuthMsg.passwordChangedRecently');
+          res.locals.error = error;
+          return next();
+        }
+
+        //Populate User to Request Object
+        req.user = currentUser;
+        next();
+      } catch (err: any) {
+        error.message = '';
         res.locals.error = error;
+
         return next();
       }
-
-      //4) Check if user changed password after the token was issued
-
-      const tokenIssuedAt =
-        typeof decodedToken === 'string'
-          ? +decodedToken
-          : decodedToken?.iat || 0;
-
-      if (currentUser.changedPasswordAfter(tokenIssuedAt)) {
-        error.message = req.i18n.t('userAuthMsg.passwordChangedRecently');
-        res.locals.error = error;
-        return next();
-      }
-
-      //Populate User to Request Object
-      req.user = currentUser;
-      next();
     }
   );
 
