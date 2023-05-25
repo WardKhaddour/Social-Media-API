@@ -2,6 +2,8 @@ import { NOT_FOUND, FORBIDDEN, DELETED, SERVER_ERROR } from '../../constants';
 import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import Post from '../../models/Post';
+import Like from '../../models/Like';
+import Comment from '../../models/Comment';
 import AppError from '../../utils/AppError';
 import fs from 'fs/promises';
 import { io } from '../..';
@@ -28,10 +30,24 @@ const deletePost = catchAsync(
         new AppError(req.i18n.t('userAuthMsg.noPermissions'), FORBIDDEN)
       );
     }
-    post.attachment?.forEach(async attach => {
-      await deleteFile(`public/${attach.filePath}`);
+    const promises = [];
+
+    const postLikes = await Like.find({
+      post: post._id,
     });
-    await post.deleteOne();
+    const postComments = await Comment.find({
+      post: post._id,
+    });
+    post.attachment?.forEach(attach => {
+      promises.push(deleteFile(`public/${attach.filePath}`));
+    });
+    postLikes.forEach(like => promises.push(like.deleteOne()));
+    postComments.forEach(comment => promises.push(comment.deleteOne()));
+
+    promises.push(post.deleteOne());
+
+    await Promise.all(promises);
+
     io.emit(ioEvents.POST, {
       action: ioActions.DELETE,
       post: post._id,
