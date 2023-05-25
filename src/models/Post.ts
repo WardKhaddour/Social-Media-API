@@ -76,6 +76,12 @@ PostSchema.virtual('comments', {
   localField: '_id',
 });
 
+PostSchema.pre(/^find/, function () {
+  this.find({
+    author: { $exists: true, $ne: null },
+  });
+});
+
 const Post = mongoose.model<PostDocInterface>('Post', PostSchema);
 
 export default Post;
