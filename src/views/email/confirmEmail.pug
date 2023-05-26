@@ -2,7 +2,11 @@ extend baseEmail
 
 block content
   p Hi #{firstName},
-    p Your Email confirm token!! Please confirm your email to get access to this App! Your confirm email token is: $ #{token} It's only valid for 10 minutes
+    p Your Email confirm token!! Please confirm your email to get access to this App! Your confirm email token is:
+    br
+    p #{token}
+    br
+    p It's only valid for 10 minutes
     table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
       tbody
         tr

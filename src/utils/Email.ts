@@ -7,7 +7,7 @@ import { htmlToText } from 'html-to-text';
 class Email {
   to: string;
   token: string;
-  from: string = `Ward Khaddour <${process.env.EMAIL_FROM}>`;
+  from: string = `TopicNexus <${process.env.EMAIL_FROM}>`;
   constructor(email: string, token: string) {
     this.to = email;
     this.token = token;
@@ -15,8 +15,6 @@ class Email {
 
   newTransport() {
     if (process.env.NODE_ENV === 'production') {
-      console.log('hello');
-
       return createTransport(
         new SMTPTransport({
           host: process.env.SMTP_HOST!,
