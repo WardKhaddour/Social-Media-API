@@ -24,21 +24,6 @@ const getUserFollowers = catchAsync(
         $lookup: {
           from: User.collection.name,
           foreignField: '_id',
-          localField: 'following',
-          as: 'following',
-          pipeline: [
-            {
-              $project: {
-                _id: 1,
-              },
-            },
-          ],
-        },
-      },
-      {
-        $lookup: {
-          from: User.collection.name,
-          foreignField: '_id',
           localField: 'follower',
           as: 'user',
           pipeline: [
@@ -67,16 +52,48 @@ const getUserFollowers = catchAsync(
         },
       },
       {
+        $lookup: {
+          from: Follow.collection.name,
+          let: {
+            userId: '$follower',
+            followerId: new ObjectId(req.user?._id),
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$following', '$$userId'] },
+                    { $eq: ['$follower', '$$followerId'] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'follow',
+        },
+      },
+      {
         $addFields: {
           isFollowing: {
-            $in: [req.user?._id, '$following._id'],
+            $cond: {
+              if: { $gt: [{ $size: '$follow' }, 0] },
+              then: true,
+              else: false,
+            },
           },
+        },
+      },
+      {
+        $project: {
+          follow: 0,
         },
       },
       {
         $project: {
           user: 1,
           isFollowing: 1,
+          follower: 1,
         },
       },
       {

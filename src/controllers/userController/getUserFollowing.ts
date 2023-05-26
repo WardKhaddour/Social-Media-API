@@ -53,20 +53,51 @@ const getUserFollowing = catchAsync(
         },
       },
       {
+        $lookup: {
+          from: Follow.collection.name,
+          let: {
+            userId: '$following',
+            followerId: new ObjectId(req.user?._id),
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ['$following', '$$userId'] },
+                    { $eq: ['$follower', '$$followerId'] },
+                  ],
+                },
+              },
+            },
+          ],
+          as: 'follow',
+        },
+      },
+      {
         $addFields: {
           isFollowing: {
-            $in: [new ObjectId(req.user?._id), ['$follower']],
+            $cond: {
+              if: { $gt: [{ $size: '$follow' }, 0] },
+              then: true,
+              else: false,
+            },
           },
         },
+      },
+      {
+        $project: {
+          follow: 0,
+        },
+      },
+      {
+        $unwind: '$user',
       },
       {
         $project: {
           user: 1,
           isFollowing: 1,
         },
-      },
-      {
-        $unwind: '$user',
       },
     ]);
 
